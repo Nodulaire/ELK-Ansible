@@ -38,7 +38,7 @@ ______________________________                        __________________________
 
 There is the infrastructure we use to test the product : 
 
-![infra-maquette](https://github.com/Nodulaire/ELK-Ansible/blob/master/Documentation/Images/infra-maquette.png)
+![infra-maquette](https://github.com/Nodulaire/ELK-Ansible/blob/master/Documentation/Images/Maquette/infra-maquette.png)
 
 ## Pro/Con
 
