@@ -1,0 +1,41 @@
+   - include_vars: '/home/administrateur/playbooks/elk/elasticsearch/defaults/elasticsearch_options.yml'   
+
+   - name: Download Elasticsearch
+     command: curl -L -o /tmp/elasticsearch-{{es_version}}.deb -O https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-{{es_version}}.deb
+     tags: [elasticsearch]
+
+   - name: Install Elasticsearch
+     command: dpkg -i /tmp/elasticsearch-{{es_version}}.deb
+     tags: [elasticsearch]
+  
+   - name: Config Elasticsearch
+     lineinfile:
+       dest='{{es_cfg_file}}'
+       line="{{ item.line }}"
+       insertafter="{{ item.regexp }}"
+       state=present
+     with_items:
+       - { regexp: '^# cluster.name',             line: 'cluster.name: {{es_cluster_name}}' }
+       - { regexp: '^# node.name',                line: 'node.name: {{es_cluster_name}}' } 
+       - { regexp: '^# http.port:',               line: 'http.port: {{es_http_port}}' }
+      # - { regexp: '^# index.number_of_shards',   line: 'index.number_of_shards: {{es_number_shards}}' }
+      # - { regexp: '^# index.number_of_replicas', line: 'index.number_of_replicas: {{es_number_replicas}}' }
+      # - { regexp: '^# index.number_of_shards',   line: 'index.number_of_shards: {{es_number_shards}}' }
+      # - { regexp: '^# path.conf',                line: 'path.conf: {{es_path_conf}}' }
+       - { regexp: '^# path.data',                line: 'path.data: {{es_path_data}}' }
+      # - { regexp: '^# path.work',                line: 'path.work: {{es_path_work}}' }
+       - { regexp: '^# path.logs',                line: 'path.logs: {{es_path_logs}}' }
+      # - { regexp: '^# path.plugins',             line: 'path.plugins: {{es_path_plugins}}' }
+       - { regexp: '^# network.host',             line: 'network.host: {{es_network_host}}' }
+     tags: [elasticsearch]
+
+   - name: Start Elasticsearch on Boot
+     #command: /bin/systemctl enable elasticsearch.service 
+     service: name=elasticsearch enabled=yes
+     tags: [elasticsearch]
+ 
+   - name: Starting Elasticsearch
+     service: name=elasticsearch state=started
+     tags: [elasticsearch]
+
+     

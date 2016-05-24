@@ -1,0 +1,67 @@
+  - include_vars: '/home/administrateur/playbooks/elk/logstash/defaults/logstash_options.yml'
+
+  - name: Install Elasticsearch GPG Key
+    apt_key: url=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+    tags: [logstash]
+
+  - name: Add logstash repository 
+    apt_repository: repo='deb http://packages.elastic.co/logstash/{{logstash_version}}/debian stable main' state=present
+    tags: [logstash]
+  
+  - name: Install Logstash
+    apt: name=logstash update_cache=yes state=present
+    tags: [logstash]
+
+  - name: Add Logstash Conf
+    copy: 
+      src={{item.copies}} 
+      dest={{logstash_dst_conf_path}}
+    with_items:
+      #- { copies: "{{logstash_src_conf_path}}/01-lumberjack-input.conf" }
+      - { copies: "{{logstash_src_conf_path}}/10-syslog.conf" }
+      #- { copies: "{{logstash_src_conf_path}}/20-rsyslog.conf" }
+      #- { copies: "{{logstash_src_conf_path}}/30-output-stdout.conf" }
+    tags: [logstash]
+  
+  - name: Add rsyslog to logstash
+    lineinfile:
+      dest='{{logstash_rsyslog_path}}'
+      line='*.* @127.0.0.1:5014'
+    tags: [logstash]
+
+  - name: Add certificate directory
+    command: mkdir -p /etc/pki/tls/private /etc/pki/tls/certs
+    tags: [logstash]
+
+  - name: Add ELK Certificates
+    copy:
+      src={{item.copies}}
+      dest={{logstash_dst_certs_path}}
+    with_items:
+      - { copies: "{{logstash_src_conf_path}}/ca.pem" }
+      - { copies: "{{logstash_src_conf_path}}/elk-cert.pem" }
+      - { copies: "{{logstash_src_conf_path}}/elk-key.pem" }
+    tags: [logstash] 
+
+  - name: Add Logstash Certificates
+    command: openssl req  -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt
+    tags: [logstash] 
+
+  - name: Edit /etc/ssl/openssl.cnf
+    lineinfile:
+      dest='{{logstash_ssl_cfg}}'
+      line='{{item.line}}'
+      insertafter='{{item.regexp}}'
+    with_items:
+      - { regexp: '^subjectAltName = IP:', line: 'subjectAltName = IP: {{logstash_server_private_ip}}' }
+
+    tags: [logstash] 
+
+  - name: Start Logstash on Boot 
+    #command: /bin/systemctl enable logstash.service 
+    service: name=logstash enabled=yes
+    tags: [logstash]
+
+  - name: Starting Logstash
+    service: name=logstash state=started
+    tags: [logstash]

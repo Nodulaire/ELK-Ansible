@@ -1,0 +1,4 @@
+#Path vers les différentes install
+
+elk_path: "/home/administrateur/playbooks/elk/"
+java_path: "/home/administrateur/playbooks/java"

@@ -1,0 +1,12 @@
+#Variables
+
+kibana_version: '4.5'
+kibana_cfg_file: '/opt/kibana/config/kibana.yml'
+kibana_port: '5601'
+kibana_host: '0.0.0.0'
+kibana_es_url: "http://localhost:9200"
+kibana_es_preservehost: "true"
+kibana_es_ssl_verify: "true"
+kibana_index: ".kibana"
+kibana_es_request_timeout: 300000
+kibana_es_shard_timeout: 0

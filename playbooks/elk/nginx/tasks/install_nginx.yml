@@ -1,0 +1,16 @@
+  - include_vars: '/home/administrateur/playbooks/elk/nginx/defaults/nginx_options.yml'
+ 
+  - name: Installation des paquets nginx
+    apt:
+      name=nginx
+      state=present
+      update_cache=true 
+    tags: [nginx] 
+  
+  - name: Start Nginx on Boot
+    service: name=nginx enabled=yes
+    tags: [nginx]
+
+  - name: Starting Nginx
+    service: name=nginx state=started
+    tags: [nginx]
