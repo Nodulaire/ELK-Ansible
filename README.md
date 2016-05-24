@@ -5,10 +5,10 @@
 Monitoring should be for everyone. Not only those with money or skills. Here we try to create a monitoring plateform, universal and easy to use. 
 
 Here you are going to find :
- - ANSIBLE scripts ( automatisation of the installation ).
+ - ANSIBLE scripts (automatisation of the installation).
  - Logstash configuration files.
  - Elasticsearch configuration files.
- - Kibana dashboards ( exemples purpose ).
+ - Kibana dashboards (exemples purpose).
  - RSyslog configurations.
  - Plugins exemples for the log forwarding.
 
@@ -69,7 +69,6 @@ For this first version we are configuring the whole stack into a single (virtual
       - RAM : 128Mo or more
       - OS  : Whatever who support SSH
       - Oth : Python 2.7
-
 
 
 
