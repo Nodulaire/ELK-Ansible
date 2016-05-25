@@ -71,7 +71,7 @@ This is an interesting Yaml syntax. Moreover it's a good example to explain and 
   ```
 
 
-*lineinfile* is a Yaml function that search a string in a file then replace it or insert it by another one.  
+*lineinfile* is an Ansible function that search a string in a file then replace it or insert it by another one.  
 Description :
   * *dest* : The file to parse
   * *line* : The line we want to insert after
@@ -86,4 +86,17 @@ Description :
    - { regexp: '^# path.logs',    line: 'path.logs: {{es_path_logs}}' }
  tags: [elasticsearch]
 ```
-The second part of this function is a "loop". If we read closely, the arguments *line* and *insertafter* are defined by a variable. We instantiate *line* and *inserafter* variables by the couple *item.line* and *item.regexp* defined after the tag *with_items*. 
+The second part of this function is a "loop". If we read closely, the arguments *line* and *insertafter* are defined by a variable. We instantiate *line* and *inserafter* variables by the couple *item.line* and *item.regexp* defined after the tag *with_items*.
+
+Finally we launch the service on boot then start it with the Ansible function :
+```
+- name: Start Elasticsearch on Boot
+  service: name=elasticsearch enabled=yes
+  tags: [elasticsearch]
+
+- name: Starting Elasticsearch
+  service: name=elasticsearch state=started
+  tags: [elasticsearch]
+  ```
+
+  Thanks !
