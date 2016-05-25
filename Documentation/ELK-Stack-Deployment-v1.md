@@ -4,6 +4,10 @@ Here we gonna see how to deploy the entire ELK Stack on each hosts.
 
 ## Summary
 
+1 - [Playbooks Strucutre](#playbooks-strucutre)  
+2 - [ELK playbooks Skeleton](#elk-splaybooks-skeleton)  
+3 - [ELK deployment Playbook](#elk-deployment-playbook) 
+
 ## Playbooks Strucutre
 
 (The structures showed below are obtained by the ```tree``` unix command made by Steve Baker).  
@@ -66,7 +70,7 @@ playbooks/
 The file <i> elk/tasks/install_elk.yml </i> is our general deployment playbook. It calls all necessary playbooks of the stack.
 
 ```
-    ---
+---
 - hosts: ELK
   remote_user: root
   tasks:
