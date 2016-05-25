@@ -88,7 +88,7 @@ Description :
 ```
 The second part of this function is a "loop". If we read closely, the arguments *line* and *insertafter* are defined by a variable. We instantiate *line* and *inserafter* variables by the couple *item.line* and *item.regexp* defined after the tag *with_items*.
 
-Finally we launch the service on boot then start it with the Ansible function :
+Finally we launch the service on boot then start it with the Ansible function *service*:
 ```
 - name: Start Elasticsearch on Boot
   service: name=elasticsearch enabled=yes
