@@ -2,7 +2,7 @@
 
 The aim of the document is to explain methods used for this project.
 
-Be free to contact us at any time. Contact information are available on the main [README](../README.md).
+Be free to contact us at any time. Contact information are available on the main [README](../README.md#contact).
 Please consider using PGP to contact us. It's a good habit to take ;)
 ## Git
 If you are a contributor, please read those instructions before merging your work.
@@ -19,7 +19,8 @@ git push -u origin master (or whatever your developement branch is)
 
 ### Playbooks
 
-You must respect the *yaml* coding conventions defined below. Each playbooks starts with ```---```
+You must respect the *yaml* coding conventions defined below.  
+Each playbooks starts with ```---```. Then we have to indicate the hosts on which we want to deploy the playbook. After we declin all playbook's tasks.
 
 ### Documentation
 
