@@ -1,8 +1,8 @@
 # Workflow
 
-This document aim to explain methods used for this project.
+The aim of the document is to explain methods used for this project.
 
-Be free to contact us at any time. Contact information are available on the main README.
+Be free to contact us at any time. Contact information are available on the main [README](..//README.md).
 Please consider using PGP to contact us. It's a good habit to take ;)
 
 
@@ -23,8 +23,22 @@ git push -u origin master (or whatever your developement branch is)
 
 ### Playbooks
 
-You must respect the yaml coding conventions defined below.
-TODO
+You must respect the *yaml* coding conventions defined below.  
+Each playbooks starts with ```---```. Then we have to indicate the hosts on which we want to deploy the playbook. After we decline all playbook's tasks.
+Here the entire structure :  
+```
+---
+- hosts : NAME
+  tasks :
+    - name : Task's description
+    ...
+    - tags : [Tag's name]
+```
+
+Here *NAME* refers to the cluster of machines define in */etc/ansible/hosts*. You have an example of configuration in [Ansible-Install-v1](Ansible-Install-v1.md).  
+The tag *tags* is optional but it should be useful for debugging.  
+Then the *...* is the command you want to execute.  
+Finally the *(...)* means the end of the playbook they are optional.
 
 ### Documentation
 
@@ -37,7 +51,12 @@ Each action realised on the project must be well documented, A project can't sur
 
 To reach as much people as possible all the documentation is written in English.
 
+<<<<<<< HEAD
 Each document will contain :
 - A short introduction of thecnology
+=======
+Each doc will contain :
+- A short introduction of technology
+>>>>>>> b5fa5cc09f02f7602ee30b4b57ebf4c98459d8c5
 - An aim section
 - As many screenshot and code snipet as possible.
