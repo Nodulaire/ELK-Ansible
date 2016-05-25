@@ -7,10 +7,11 @@ Please consider using PGP to contact us. It's a good habit to take ;)
 
 
 ## Summary
-1 - [Git](#git)
-2 - [Namimg convention](#naming-convention)
-2.1 - [Playbooks](#playbooks)
-2.2 - [Documentation](#documentation)
+1 - [Git](#git)  
+2 - [Namimg convention](#naming-convention)  
+2.1 - [Playbooks](#playbooks)  
+2.2 - [Documentation](#documentation)   
+
 ## Git
 If you are a contributor, please read those instructions before merging your work.
 
