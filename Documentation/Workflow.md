@@ -2,7 +2,7 @@
 
 The aim of the document is to explain methods used for this project.
 
-Be free to contact us at any time. Contact information are available on the main [README](..//README.md%23contact).
+Be free to contact us at any time. Contact information are available on the main [README](..//README.md).
 Please consider using PGP to contact us. It's a good habit to take ;)
 ## Git
 If you are a contributor, please read those instructions before merging your work.
@@ -20,7 +20,21 @@ git push -u origin master (or whatever your developement branch is)
 ### Playbooks
 
 You must respect the *yaml* coding conventions defined below.  
-Each playbooks starts with ```---```. Then we have to indicate the hosts on which we want to deploy the playbook. After we declin all playbook's tasks.
+Each playbooks starts with ```---```. Then we have to indicate the hosts on which we want to deploy the playbook. After we decline all playbook's tasks.
+Here the entire structure :  
+```
+---
+- hosts : NAME
+  tasks :
+    - name : Task's description
+    ...
+    - tags : [Tag's name]
+```
+
+Here *NAME* refers to the cluster of machines define in */etc/ansible/hosts*. You have an example of configuration in [Ansible-Install-v1](Ansible-Install-v1.md).  
+The tag *tags* is optional but it should be useful for debugging.  
+Then the *...* is the command you want to execute.  
+Finally the *(...)* means the end of the playbook they are optional.
 
 ### Documentation
 
