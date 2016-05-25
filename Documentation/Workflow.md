@@ -1,8 +1,8 @@
 # Workflow
 
-This document aim to explain methods used for this project.
+The aim of the document is to explain methods used for this project.
 
-Be free to contact us at any time. Contact information are available on the main README.
+Be free to contact us at any time. Contact information are available on the main [README](../README.md).
 Please consider using PGP to contact us. It's a good habit to take ;)
 ## Git
 If you are a contributor, please read those instructions before merging your work.
@@ -19,8 +19,7 @@ git push -u origin master (or whatever your developement branch is)
 
 ### Playbooks
 
-You must respect the yaml coding conventions defined below.
-TODO
+You must respect the *yaml* coding conventions defined below. Each playbooks starts with ```---```
 
 ### Documentation
 
@@ -34,6 +33,6 @@ Each action realised on the project must be well documented, A project can't sur
 To reach as much people as possible all the documentation is written in English.
 
 Each doc will contain :
-- A short introduction of thecnology
+- A short introduction of technology
 - An aim section
 - As many screenshot and code snipet as possible.
