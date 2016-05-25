@@ -74,9 +74,9 @@ For this first version we are configuring the whole stack into a single (virtual
 
 ## Contact
 This project is made on our spare time be free to contact us at any time.
-----------------------
+
 | Role | Name | Contact | PGP Key signature |
-|----------------------------------------|
+|-------|------|--------|-------------------|
 |Project architect | **Renaud PULIDO**  | renaud.pulido@gmail.com | 144CFD9A |
 |Project developer | **Boris ROMANOW**  | boris.romanow@gmail.com | 2185AF59 |
 
