@@ -5,8 +5,8 @@ Here we gonna see how to deploy the entire ELK Stack on each hosts.
 ## Summary
 
 1 - [Playbooks Strucutre](#playbooks-strucutre)  
-2 - [ELK playbooks Skeleton](#elk-splaybooks-skeleton)  
-3 - [ELK deployment Playbook](#elk-deployment-playbook) 
+2 - [ELK playbooks Skeleton](#elk-playbooks-skeleton)  
+3 - [ELK deployment Playbook](#elk-deployment-playbook)
 
 ## Playbooks Strucutre
 
