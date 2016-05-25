@@ -38,6 +38,6 @@ es_http_port: '9200'
 
 Now I will describe the most significative options :  
 * *es_cfg_file* : This is the path to the file we need to modify.  
-* *es_version* : The version of elasticsearch you want to install (the last one while I written this document)
+* *es_version* : The version of elasticsearch you want to install (the lastest when I written this document)
 * *es_cluster_name* : The name of the hosts cluster
 * *es_node_name* : The name of the node (Host)
