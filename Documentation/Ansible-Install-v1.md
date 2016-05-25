@@ -9,6 +9,23 @@ Ansible is a simple IT automation engine that automates cloud provisioning, conf
 
   Here we are going to deploy and test a basic ANSIBLE installation. It mean installation from the depository, configuration and test on a remote host. We also create our first basic playbook.
 
+## Summary
+1 - [Principe](#principe)  
+1.1 - [Playbooks](#playbooks)  
+2 - [Infrastructure](#infrastructure)    
+3 - [Installation](#installation)  
+3.1 - [Before we start](#before-we-start)  
+3.2 - [Download from repository](#download-from-repository)   
+3.3 - [Remote hosts configuration](#remote-hosts-configuration)  
+3.4 - [Paquets installation](#paquets-installation)    
+3.5 - [Configuration](#configuration)   
+3.6 - [Connection via ssh-key](#Connection via ssh-key)      
+3.6.1 - [Generating an ssh-key](#generating-an-ssh-key)   
+4 - [Host file configuration](#host-file-configuration)    
+5 - [Launching the playbook](#launching-the-playbook)  
+6 - [TODO](#todo)  
+
+
 ## Principe
 
 Written in python it permit the configuration of remote hosts like you used to do with bash scripts, but way better.
@@ -20,7 +37,7 @@ It's the name given to the codes name written in ansible. They centralize all th
 The language used in playbook is '.yaml', witch is just an optimised XML.
 
 ## Infrastructure
-We choose here to install the ansible service in a dedicated virtual machine but you can just use your personal computer as ansible server, while you still have access to the deployment server.
+We choosed here to install the ansible service in a dedicated virtual machine but you can just use your personal computer as ansible server, while you still have access to the deployment server.
 
 Below, the schematic diagram.
 ![ansile deployement schema](Images/Ansible/ansible_principe_schema.png)
@@ -43,7 +60,7 @@ sudo apt-get install -y ansible
 ```
 That's all. Your ansible server is ready !
 
-### Remote hosts configuration'
+### Remote hosts configuration
 
 For ansible to work on remote hosts they need:
 - an SSH port listening
@@ -53,7 +70,7 @@ For ansible to work on remote hosts they need:
 
 We assume a root user exist on the host and you know his password.
 
-#### Installation
+#### Paquets installation
 SSH server and installation. As everything else on Ubuntu, its quite easy:
 ```
 sudo apt-get install -y python openssh-server
@@ -104,8 +121,11 @@ If the communication is successfull you should see something like :
      "changed": false,
      "ping": "pong"
    }
-```
- ### The host file
+```     
+
+### Host file configuration
+
+
  This file in ```/etc/ansible/hosts``` of the ansible server concentrate all the remote hosts.
  Configuration example:  
  ```
@@ -148,16 +168,20 @@ reate a file named ```first.yml```.
       apt: name=sl update_cache=yes
 ```
 
+### Launching the playbook
 To execute it do:  
 ```anbile-playbook first.yml```
 You should see something like this:
 ![playbook execution](Images/Ansible/ansible_deployement_playbook.png)
 
-That's all folks !  
-Thanks for reading,  
-**Nodulaire**
+
 ## TODO
 In an hypothetic future we should:
 - Explain how to embed packets for internet-less deployement
 - Explain how to create playbooks who handles connection by password or with a ssh-key passord.
 - Create a script to deploy the ssh-key to each hosts
+
+
+That's all folks !  
+Thanks for reading,  
+**Nodulaire**

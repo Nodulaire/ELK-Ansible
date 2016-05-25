@@ -39,7 +39,7 @@ ______________________________                        __________________________
 
 There is the infrastructure we use to test our playbooks :
 
-![infra-maquette](Documentation/Images/Maquette/infra-maquette.png)
+![Infra-maquette](Documentation/Images/Maquette/infra-maquette.png)
 
 ## Pro/Con
 

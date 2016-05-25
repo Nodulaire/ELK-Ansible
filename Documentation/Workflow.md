@@ -4,6 +4,10 @@ This document aim to explain methods used for this project.
 
 Be free to contact us at any time. Contact information are available on the main README.
 Please consider using PGP to contact us. It's a good habit to take ;)
+
+
+
+
 ## Git
 If you are a contributor, please read those instructions before merging your work.
 
@@ -33,7 +37,7 @@ Each action realised on the project must be well documented, A project can't sur
 
 To reach as much people as possible all the documentation is written in English.
 
-Each doc will contain :
+Each document will contain :
 - A short introduction of thecnology
 - An aim section
 - As many screenshot and code snipet as possible.

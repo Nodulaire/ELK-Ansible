@@ -2,7 +2,11 @@
 
 Here we gonna see how to deploy the entire ELK Stack on each hosts.
 
+## Summary
+
 ## Playbooks Strucutre
+
+(The structures showed below are obtained by the ```tree``` unix command made by Steve Baker).  
 
 Each playbook follow this structure :
 
