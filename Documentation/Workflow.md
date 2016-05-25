@@ -6,8 +6,11 @@ Be free to contact us at any time. Contact information are available on the main
 Please consider using PGP to contact us. It's a good habit to take ;)
 
 
-
-
+## Summary
+1 - [Git](#git)
+2 - [Namimg convention](#naming-convention)
+2.1 - [Playbooks](#playbooks)
+2.2 - [Documentation](#documentation)
 ## Git
 If you are a contributor, please read those instructions before merging your work.
 
@@ -51,12 +54,8 @@ Each action realised on the project must be well documented, A project can't sur
 
 To reach as much people as possible all the documentation is written in English.
 
-<<<<<<< HEAD
+
 Each document will contain :
-- A short introduction of thecnology
-=======
-Each doc will contain :
 - A short introduction of technology
->>>>>>> b5fa5cc09f02f7602ee30b4b57ebf4c98459d8c5
 - An aim section
 - As many screenshot and code snipet as possible.
