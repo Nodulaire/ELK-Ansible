@@ -3,6 +3,8 @@
 ## Summary
 1 - [Definition](#Definition)  
 2 - [Installation](#Installation)  
+2.1 - [Variables file](#variables-file)
+2.2 - [Install file](#install-file)
 
 ## Definition
 
@@ -41,3 +43,10 @@ Now I will describe the most significative options :
 * *es_version* : The version of elasticsearch you want to install (the lastest when I written this document)
 * *es_cluster_name* : The name of the hosts cluster
 * *es_node_name* : The name of the node (Host)
+* *es_path_xxx* : File location
+* *es_network_host* :
+* *es_http_port* : Elasticsearch port
+
+Obviously each option can be adapted to you architecture.
+
+### Install file
