@@ -22,15 +22,15 @@ ELK is the short nickname for Elasticsearch - Logstash - Kibana who are in order
 
 ### Logstash
 
-[Installation and configuration]()  
-[Grok examples]()  
+[Installation and configuration]()    
+[Grok examples]()   
 
 ### ElasticSearch
 
-[Installation and configuration]()  
+[Installation and configuration]()   
 
 
 ### Kibana
-[Installation and configuration]()
-[Search like a boss]()
-[How to make to dashboard]()
+[Installation and configuration]()  
+[Search like a boss]()  
+[How to make to dashboard]()  
