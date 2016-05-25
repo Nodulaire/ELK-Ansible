@@ -50,3 +50,40 @@ Now I will describe the most significative options :
 Obviously each option can be adapted to you architecture.
 
 ### Install file
+
+You can find this file [here](../playbooks/elk/elasticsearch/tasks/install_elasticsearch.yml). I will describe the main part of the installation.
+
+```
+- include_vars: '/home/administrateur/playbooks/elk/elasticsearch/defaults/elasticsearch_options.yml'
+```
+
+This line include each variables we need for the install. To use a variable, use this syntax *{{variable_name}}*.  
+
+This is an interesting Yaml syntax. Moreover it's a good example to explain and understand Yaml syntax.  
+
+```
+- name: Config Elasticsearch
+  lineinfile:
+    dest='{{es_cfg_file}}'
+    line="{{ item.line }}"
+    insertafter="{{ item.regexp }}"
+    state=present
+  ```
+
+
+*lineinfile* is a Yaml function that search a string in a file then replace it or insert it by another one.  
+Description :
+  * *dest* : The file to parse
+  * *line* : The line we want to insert after
+  * *insertafter* : The string we are looking for. The keyword *insertafter* means that we want to insert the content of the variable *line* after the match and NOT INSTEAD of.
+  * *state* : We insert only if *insertafter* match.
+
+```
+ with_items:
+   - { regexp: '^# cluster.name', line: 'cluster.name: {{es_cluster_name}}' }
+   - { regexp: '^# node.name',    line: 'node.name: {{es_cluster_name}}' }
+   - { regexp: '^# http.port:',   line: 'http.port: {{es_http_port}}' }
+   - { regexp: '^# path.logs',    line: 'path.logs: {{es_path_logs}}' }
+ tags: [elasticsearch]
+```
+The second part of this function is a "loop". If we read closely, the arguments *line* and *insertafter* are defined by a variable. We instantiate *line* and *inserafter* variables by the couple *item.line* and *item.regexp* defined after the tag *with_items*. 
