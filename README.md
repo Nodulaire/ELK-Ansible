@@ -13,6 +13,22 @@ Here you are going to find :
  - RSyslog configurations.
  - Plugins exemples for the log forwarding.
 
+## Summary
+1 - [Timeline](#timeline)  
+2 - [Architecture](#architecture)  
+2.1 - [Principe](#principe)  
+2.2 - [Model installation](#model-installation)  
+3 - [Pro/Con](#pro/con)  
+3.1 - [Pro](#pro)  
+3.2 - [Con](#con)  
+4 - [Hardware requirement](#hardware-requirement)  
+5 - [Anouncement](#announcement)  
+6 - [Contact](#contact)  
+7 - [TODO](#todo)  
+
+## Timeline
+
+![timeline](Documentation/Images/Maquette/timeline.png)
 
 ## Architecture
 
@@ -72,6 +88,10 @@ For this first version we are configuring the whole stack into a single (virtual
       - Oth : Python 2.7
 
 
+      ## Anouncement
+      The project isn't ready yet. There is a lot of work left to do. Feel free to join us in our creation !
+
+
 ## Contact
 This project is made on our spare time be free to contact us at any time.
 
@@ -79,11 +99,6 @@ This project is made on our spare time be free to contact us at any time.
 |-------|------|--------|-------------------|
 |Project architect | **Renaud PULIDO**  | renaud.pulido@gmail.com | 144CFD9A |
 |Project developer | **Boris ROMANOW**  | boris.romanow@gmail.com | 2185AF59 |
-
-
-## Anouncement
-The project isn't ready yet. There is a lot of work left to do. Feel free to join us in our creation !
-
 
 
 ### TODO :
