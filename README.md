@@ -88,8 +88,8 @@ For this first version we are configuring the whole stack into a single (virtual
       - Oth : Python 2.7
 
 
-      ## Anouncement
-      The project isn't ready yet. There is a lot of work left to do. Feel free to join us in our creation !
+## Anouncement
+The project isn't ready yet. There is a lot of work left to do. Feel free to join us in our creation !
 
 
 ## Contact
