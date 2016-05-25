@@ -74,7 +74,7 @@ For this first version we are configuring the whole stack into a single (virtual
 
 ## Contact
 This project is made on our spare time be free to contact us at any time.
-
+----------------------
 | Role | Name | Contact | PGP Key signature |
 |----------------------------------------|
 |Project architect | **Renaud PULIDO**  | renaud.pulido@gmail.com | 144CFD9A |
@@ -82,7 +82,7 @@ This project is made on our spare time be free to contact us at any time.
 
 
 ## Anouncement
-The project isn't ready at this time. There is a lot of work left to do. Feel free to join us in our developements !
+The project isn't ready yet. There is a lot of work left to do. Feel free to join us in our creation !
 
 
 
