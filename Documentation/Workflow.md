@@ -2,7 +2,7 @@
 
 The aim of the document is to explain methods used for this project.
 
-Be free to contact us at any time. Contact information are available on the main [README](../README.md#contact).
+Be free to contact us at any time. Contact information are available on the main [README](/https://github.com/Nodulaire/ELK-Ansible/blob/master/README.md#contact).
 Please consider using PGP to contact us. It's a good habit to take ;)
 ## Git
 If you are a contributor, please read those instructions before merging your work.
