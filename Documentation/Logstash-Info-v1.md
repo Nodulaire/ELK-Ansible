@@ -11,7 +11,7 @@ Logtsash collect and process all the log he received. It's support a lot of form
 
 ## Installation
 
-he Installation of logstash is part of our ELK deployement playbooks. Here we're gonna explain the files contain.
+The Installation of logstash is part of our ELK deployement playbook. Here we're gonna explain the files contain.
 ### Variables file
 
 You can find this file [here](../playbooks/elk/logstash/defaults/logstash_options.yml).
@@ -25,3 +25,9 @@ logstash_server_private_ip: "192.168.122.26"
 logstash_rsyslog_path: "/etc/rsyslog.conf"
 logstash_ssl_cfg: "/etc/ssl/openssl.cnf"
 ```
+
+As the other playbook we their is the version, the address, and the path of files to configure.
+
+## Sources files
+
+Contrary to other playbooks, logstash integrate the *src* directory. It contains files which we directly transfer to the hosts.
