@@ -54,11 +54,9 @@
       insertafter='{{item.regexp}}'
     with_items:
       - { regexp: '^subjectAltName = IP:', line: 'subjectAltName = IP: {{logstash_server_private_ip}}' }
-
     tags: [logstash]
 
   - name: Start Logstash on Boot
-    #command: /bin/systemctl enable logstash.service
     service: name=logstash enabled=yes
     tags: [logstash]
 
