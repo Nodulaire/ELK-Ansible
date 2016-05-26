@@ -116,7 +116,7 @@ The simpliest way to test the link between the ansible server and a remote host 
 ansible <ip-host> -u root -m ping
 ```
 If the communication is successfull you should see something like :
-```ansible
+```yml
    10.194.0.8 | SUCCESS => {
      "changed": false,
      "ping": "pong"
@@ -159,7 +159,7 @@ And if you want to ping all the hosts:
 C
 reate a file named ```first.yml```.
 
-```
+```yml
 ---
 - hosts: WebServers
   remote_user: root

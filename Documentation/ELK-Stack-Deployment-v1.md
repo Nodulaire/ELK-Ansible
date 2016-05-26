@@ -1,5 +1,7 @@
 # ELK Stack deployment
 
+## Aim of the document
+
 Here we gonna see how to deploy the entire ELK Stack on each hosts.
 
 ## Summary
@@ -98,4 +100,4 @@ The file <i> elk/tasks/install_elk.yml </i> is our general deployment playbook. 
 ```
 
 Thanks !  
-Boboo
+**Boboo**

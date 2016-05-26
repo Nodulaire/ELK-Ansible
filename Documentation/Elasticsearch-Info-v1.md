@@ -1,4 +1,7 @@
 # Elasticsearch
+## Aim of the document
+
+Here we are going to explain the goal of elasticsearch in the ELK stack and we will describe the playbook installation.
 
 ## Summary
 1 - [Definition](#Definition)  
@@ -100,4 +103,4 @@ Finally we launch the service on boot then start it with the Ansible function *s
   ```
 
   Thanks !  
-  Boboo
+  **Boboo**

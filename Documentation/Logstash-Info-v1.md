@@ -1,5 +1,9 @@
 # Logstash
 
+## Aim of the document
+
+Here we are going to explain the goal of logstash in the ELK stack and we will describe the playbook installation.
+
 ## Summary
 1   - [Definition](#definition)   
 2   - [Installation](#installation)  
@@ -126,4 +130,4 @@ Finally we launch the service on boot then start it with the function *service* 
 ```  
 
 Thanks !  
-Boboo
+**Boboo**
