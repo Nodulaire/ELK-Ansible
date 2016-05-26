@@ -1,4 +1,4 @@
-# Nginx configuration
+# Apache configuration
 
 
 ## Aim
