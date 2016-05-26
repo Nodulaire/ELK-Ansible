@@ -66,7 +66,7 @@ Then we install logstash package with the function *apt* :
   apt: name=logstash update_cache=yes state=present
   tags: [logstash]
 ```
-Then we copie the ELK server keys (locate in [playbooks/elk/logstash/src](#../Playbooks/elk/logstash/src/)) on the host with a loop and th function copy :
+Then we copie the ELK server keys (locate in *Playbooks/elk/logstash/src* on the host with a loop and th function copy :
 ```yml
 - name: Add ELK Certificates
   copy:
@@ -79,7 +79,8 @@ Then we copie the ELK server keys (locate in [playbooks/elk/logstash/src](#../Pl
   tags: [logstash]
   ```
 These certificates will be used in oder to secure the communication between the server and the hosts.  
-We also add a logstash conf file from logstash [src](#../Playbooks/elk/logstash/src/*) directory.
+We also add a logstash conf file from *Playbooks/elk/logstash/src* directory.
+
 ```yml
 - name: Add Logstash Conf
   copy:
