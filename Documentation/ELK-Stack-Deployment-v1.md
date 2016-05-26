@@ -96,3 +96,6 @@ The file <i> elk/tasks/install_elk.yml </i> is our general deployment playbook. 
       apt: upgrade=yes
       tags: [ELK]    
 ```
+
+Thanks !
+Boboo
