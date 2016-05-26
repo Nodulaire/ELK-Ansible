@@ -97,5 +97,5 @@ The file <i> elk/tasks/install_elk.yml </i> is our general deployment playbook. 
       tags: [ELK]    
 ```
 
-Thanks !
+Thanks !  
 Boboo

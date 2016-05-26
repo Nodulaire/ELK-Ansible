@@ -124,5 +124,5 @@ Finally we launch the service on boot then start it with the function *service* 
   tags: [logstash]
 ```  
 
-Thanks !
+Thanks !  
 Boboo
