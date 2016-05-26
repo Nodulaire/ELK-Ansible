@@ -29,10 +29,6 @@
       line='{{logstash_rsyslog_add}}'
     tags: [logstash]
 
-  - name: Add certificate directory
-    command: mkdir -p /etc/pki/tls/private /etc/pki/tls/certs
-    tags: [logstash]
-
   - name: Add ELK Certificates
     copy:
       src={{item.copies}}
@@ -41,6 +37,10 @@
       - { copies: "{{logstash_src_conf_path}}/ca.pem" }
       - { copies: "{{logstash_src_conf_path}}/elk-cert.pem" }
       - { copies: "{{logstash_src_conf_path}}/elk-key.pem" }
+    tags: [logstash]
+    
+  - name: Add certificate directory
+    command: mkdir -p /etc/pki/tls/private /etc/pki/tls/certs
     tags: [logstash]
 
   - name: Add Logstash Certificates

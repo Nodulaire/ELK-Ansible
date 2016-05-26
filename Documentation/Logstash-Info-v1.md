@@ -66,7 +66,7 @@ Then we install logstash package with the function *apt* :
   apt: name=logstash update_cache=yes state=present
   tags: [logstash]
 ```
-Then we copies the ELK server keys on the host with a loop and th function copy :
+Then we copie the ELK server keys (locate in [playbooks/elk/logstash/src](#../playbooks/elk/logstash/src)) on the host with a loop and th function copy :
 ```
 - name: Add ELK Certificates
   copy:
@@ -78,9 +78,40 @@ Then we copies the ELK server keys on the host with a loop and th function copy 
     - { copies: "{{logstash_src_conf_path}}/elk-key.pem" }
   tags: [logstash]
   ```
-These certificates will be used in oder to secure the communication between the server and the hosts.
+These certificates will be used in oder to secure the communication between the server and the hosts.  
+We also add a logstash conf file from logstash [src](#../playbooks/elk/logstash/src) directory.
+```
+- name: Add Logstash Conf
+  copy:
+    src={{item.copies}}
+    dest={{logstash_dst_conf_path}}
+  with_items:
+    - { copies: "{{logstash_src_conf_path}}/10-syslog.conf" }
+  tags: [logstash]
+```
+This file contain the "parser" for the logs. We use a loop even if there is only one file because it will be easier to add a file.
 
-TODO
+Then we add the log *rsyslog* to logstash :
+```
+- name: Add rsyslog to logstash
+  lineinfile:
+    dest='{{logstash_rsyslog_path}}'
+    line='{{logstash_rsyslog_add}}'
+  tags: [logstash]
+```
+
+After we create directories for the certificate we will generate :
+```
+ - name: Add certificate directory
+   command: mkdir -p /etc/pki/tls/private /etc/pki/tls/certs
+   tags: [logstash]
+```
+Here the certificate generation :
+```
+ - name: Add Logstash Certificates
+   command: openssl req  -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt
+   tags: [logstash]
+```
 
 Finally we launch the service on boot then start it with the function *service* :
 ```
