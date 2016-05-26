@@ -17,7 +17,7 @@ Logtsash collect and process all the log he received. It's support a lot of form
 The Installation of logstash is part of our ELK deployement playbook. Here we're gonna explain the files contain.
 ### Variables file
 
-You can find this file [here](../playbooks/elk/logstash/defaults/logstash_options.yml).
+You can find this file [here](../Playbooks/elk/logstash/defaults/logstash_options.yml).
 
 ```yml
 logstash_version: "2.3"
@@ -39,7 +39,7 @@ TODO
 
 ## Install file
 
-You can find this file [here](../playbooks/elk/logstash/tasks/install_logstash.yml). I will describe the main part of the installation.
+You can find this file [here](../Playbooks/elk/logstash/tasks/install_logstash.yml). I will describe the main part of the installation.
 
 ```yml
 - include_vars: '/home/administrateur/playbooks/elk/logstash/defaults/llogstash_options.yml'
@@ -66,7 +66,7 @@ Then we install logstash package with the function *apt* :
   apt: name=logstash update_cache=yes state=present
   tags: [logstash]
 ```
-Then we copie the ELK server keys (locate in [playbooks/elk/logstash/src](#../playbooks/elk/logstash/src)) on the host with a loop and th function copy :
+Then we copie the ELK server keys (locate in [playbooks/elk/logstash/src](#../Playbooks/elk/logstash/src)) on the host with a loop and th function copy :
 ```yml
 - name: Add ELK Certificates
   copy:
@@ -79,7 +79,7 @@ Then we copie the ELK server keys (locate in [playbooks/elk/logstash/src](#../pl
   tags: [logstash]
   ```
 These certificates will be used in oder to secure the communication between the server and the hosts.  
-We also add a logstash conf file from logstash [src](#../playbooks/elk/logstash/src) directory.
+We also add a logstash conf file from logstash [src](#../Playbooks/elk/logstash/src) directory.
 ```yml
 - name: Add Logstash Conf
   copy:

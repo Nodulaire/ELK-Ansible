@@ -16,8 +16,8 @@ The Installation of elasticsearch is part of our ELK deployement playbooks. Here
 
 ### Variables file
 
-You can find this file [here](../playbooks/elk/elasticsearch/defaults/elasticsearch_options.yml).
-```
+You can find this file [here](../Playbooks/elk/elasticsearch/defaults/elasticsearch_options.yml).
+```yml
 # Default variables. Change as needed.
 
 # Corresponding to file /etc/elasticsearch/elasticsearch.yml
@@ -51,9 +51,9 @@ Obviously each option can be adapted to you architecture.
 
 ### Install file
 
-You can find this file [here](../playbooks/elk/elasticsearch/tasks/install_elasticsearch.yml). I will describe the main part of the installation.
+You can find this file [here](../Playbooks/elk/elasticsearch/tasks/install_elasticsearch.yml). I will describe the main part of the installation.
 
-```
+```yml
 - include_vars: '/home/administrateur/playbooks/elk/elasticsearch/defaults/elasticsearch_options.yml'
 ```
 
@@ -61,7 +61,7 @@ This line include each variables we need for the install. To use a variable, use
 
 This is an interesting Yaml syntax. Moreover it's a good example to explain and understand Yaml syntax.  
 
-```
+```yml
 - name: Config Elasticsearch
   lineinfile:
     dest='{{es_cfg_file}}'
@@ -78,7 +78,7 @@ Description :
   * *insertafter* : The string we are looking for. The keyword *insertafter* means that we want to insert the content of the variable *line* after the match and NOT INSTEAD of.
   * *state* : We insert only if *insertafter* match.
 
-```
+```yml
  with_items:
    - { regexp: '^# cluster.name', line: 'cluster.name: {{es_cluster_name}}' }
    - { regexp: '^# node.name',    line: 'node.name: {{es_cluster_name}}' }
@@ -89,7 +89,7 @@ Description :
 The second part of this function is a "loop". If we read closely, the arguments *line* and *insertafter* are defined by a variable. We instantiate *line* and *inserafter* variables by the couple *item.line* and *item.regexp* defined after the tag *with_items*.
 
 Finally we launch the service on boot then start it with the Ansible function *service*:
-```
+```yml
 - name: Start Elasticsearch on Boot
   service: name=elasticsearch enabled=yes
   tags: [elasticsearch]
