@@ -1,0 +1,21 @@
+# file: production
+# AIMS: define the role of specific IP/Hostname servers
+
+# Logstash production server
+[production-logstash]
+10.6.7.230 ansible_user=rpulido
+
+# Elasticsearch production server
+[production-elasticsearch]
+10.6.7.232 ansible_user=rpulido
+
+# Kibana production server
+[production-kibana]
+10.6.7.233 ansible_user=rpulido
+
+
+# Every servers on production
+[production:children]
+production-logstash
+production-elasticsearch
+production-kibana

@@ -1,8 +1,0 @@
-logstash_version: "2.3"
-logstash_src_conf_path: "/home/administrateur/playbooks/elk/logstash/src/"
-logstash_dst_conf_path: "/etc/logstash/conf.d/"
-logstash_dst_certs_path: "/opt/rsyslog"
-logstash_server_private_ip: "192.168.122.26"
-logstash_rsyslog_path: "/etc/rsyslog.conf"
-logstash_ssl_cfg: "/etc/ssl/openssl.cnf"
-logstash_rsyslog_add: "*.* @127.0.0.1:5014"

@@ -1,0 +1,112 @@
+---
+# This playbook deploys the whole application stack in this site.
+# Be attentive, each modification will have several impacts on the deployement
+
+################### Common ####################
+- name         : Apply common configurations to all nodes
+  hosts        : production
+  become       : yes
+  become_method: sudo # run commands as sudo
+  vars:
+    ssh_port: 22
+  roles:
+    - common
+    - java
+
+################### Logstash ###################
+- name         : Install logstash
+  hosts        : production-logstash
+  become       : yes
+  become_method: sudo
+  vars:
+    # Logstash installation variables
+    ## Wanted version number
+    #logstash_version        : "2.3.3"
+    logstash_apt_repo_url   : "deb https://packages.elastic.co/logstash/2.3/debian stable main"
+    ## Absolute path to the installation folder
+    logstash_base_dir       : "/data/logstash"
+    ## Posix
+    logstash_directory_owner: "root"
+    logstash_directory_group: "root"
+    # Relative path of the grok files in the git repo
+    logstash_src_conf_path  : "roles/logstash/src"
+
+    # Restart option, if different you need to restart logstash manually
+    logstash_start_stop     : "init.d"
+    ## Directory structure
+    logstash_install_dir    : "{{ logstash_base_dir }}"
+    logstash_sources_dir    : "{{ logstash_base_dir }}/source"
+    logstash_extra_dir      : "{{ logstash_base_dir }}/extra"
+    logstash_etc_dir        : "/etc/logstash/conf.d/" # TODO Check if still needed
+    logstash_bin            : "{{ logstash_install_dir  }}/bin/logstash"
+    logstash_agent_arg      : "agent -f"
+    logstash_extra_arg      : ""
+    logstash_start_cmd      : "{{ logstash_bin  }} {{ logstash_agent_arg  }} {{ logstash_extra_arg  }} {{ logstash_etc_dir  }}"
+
+    # Logstash configuration variables
+    logstash_listenning_port: 5014
+    #logstash_local_log_dir  : '/var/log/syslog/logstash'
+
+    # Elasticsearch host variables
+    elasticsearch_ip_addr               : "{{ hostvars[groups['production-logstash'][0]].ansible_default_ipv4.address }}"
+    elasticsearch_listenning_port       : 9200 # This must mach with the port on 'Install Elasticsearch'
+  roles:
+      - logstash
+
+################ Elasticsearch #################
+- name         : Install elasticsearch
+  hosts        : production-elasticsearch
+  become       : yes
+  become_method: sudo
+  vars:
+    # Unix variables
+    elasticsearch_user            : 'elasticsearch'
+    elasticsearch_group           : 'elasticsearch'
+
+    # Directory structure
+    elasticsearch_home_dir        : '/usr/share/elasticsearch'
+    elasticsearch_plugin_dir      : '/usr/share/elasticsearch/plugins'
+    elasticsearch_log_dir         : '/var/log/elasticsearch'
+    elasticsearch_data_dir        : '/data/elasticsearch'
+    elasticsearch_work_dir        : '/tmp/elasticsearch'
+    elasticsearch_conf_dir        : '/etc/elasticsearch'
+    elastcisearch_conf_file       : "{{  elasticsearch_conf_dir }}/elasticsearch.yml"
+    elasticsearch_pid_dir         : '/var/run'
+    elastcisearch_cluster_name    : 'ELK-Cluster1'
+
+    # Download link
+    elasticsearch_apt_repo_url    : 'deb http://packages.elastic.co/elasticsearch/2.x/debian stable main'
+    #elasticsearch_download_url    : "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.3.3/elasticsearch-2.3.3.deb"
+    #elasticsearch_version         : "2.3.3"
+
+    # Elasticsearch running variables
+    elastcisearch_network_host    : "0.0.0.0"
+    elasticsearch_listenning_port : 9200
+    elasticsearch_max_open_files  : 65535
+  roles:
+      - elasticsearch
+
+
+
+##################### Kibana ####################
+- name         : Install kibana
+  hosts        : production-kibana
+  become       : yes
+  become_method: sudo
+  vars:
+    kibana_listenning_port              : 5601
+    kibana_version                      : '4.5'
+    kibana_cfg_file                     : '/opt/kibana/config/kibana.yml'
+    kibana_host                         : "0.0.0.0"
+
+    elasticsearch_ip_addr               : "{{ hostvars[groups['production-elasticsearch'][0]].ansible_default_ipv4.address }}"
+    elasticsearch_listenning_port       : 9200 # This must mach with the port on 'Install Elasticsearch'
+    kibana_es_url                       : "http://{{elasticsearch_ip_addr}}:{{elasticsearch_listenning_port}}"
+    kibana_es_preservehost              : "true"
+    kibana_es_ssl_verify                : "false"
+    kibana_index                        : ".kibana"
+    kibana_es_request_timeout           : 300000
+    kibana_es_shard_timeout             : 0
+  roles:
+      - nginx
+      - kibana

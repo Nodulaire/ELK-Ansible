@@ -1,0 +1,98 @@
+---
+# This playbook contains common plays that will be run on all nodes
+
+################## Pre-installation ##################
+- name  : Configure ufw rules
+  ufw   : rule={{ item.rule }} port={{ item.port }}
+  with_items:
+    - { rule: 'allow', port: '{{ elasticsearch_listenning_port }}' }
+  notify:
+    - restart ufw
+
+################## Posix ##################
+- name  : Elasticsearch - Configuring elastic group
+  group :
+    name="{{ elasticsearch_group }}"
+
+- name  : Elasticsearch - Configuring elastic user
+  user  :
+    name="{{ elasticsearch_user }}"
+    group="{{ elasticsearch_group }}"
+    createhome=no
+
+- name  : Elasticsearch - Creating work directory
+  file  :
+    state=directory
+    path="{{ elasticsearch_work_dir }}"
+    group="{{ elasticsearch_group }}"
+    recurse=yes
+
+- name  : Elasticsearch - Creating data directory
+  file  :
+    state=directory
+    path="{{ elasticsearch_data_dir }}"
+    group="{{ elasticsearch_group }}"
+    recurse=yes
+
+- name  : Elasticsearch - Creating stack directory
+  file  :
+    state=directory
+    path="{{ elastcisearch_cluster_name }}"
+    group="{{ elasticsearch_group }}"
+    recurse=yes
+####################Installation ##############################
+- name : Installing Elasticsearch repo GPG Key
+  apt_key: url=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+
+- name: adding repository
+  apt_repository: repo="{{elasticsearch_apt_repo_url}}" state=present
+
+- name: apt install
+  apt:
+    name=elasticsearch
+    state=present
+    update_cache=true
+
+# Adapting OS to elasticsearch special needs
+- name      : Configure limits max_open_files
+  lineinfile:
+    dest="/etc/security/limits.conf"
+    regexp="^{{ elasticsearch_user }}     -    nofile    {{ elasticsearch_max_open_files }}"
+    insertafter=EOF
+    line="{{ elasticsearch_user }}     -    nofile    {{ elasticsearch_max_open_files }}"
+  when      :
+    elasticsearch_max_open_files is defined
+  notify    :
+    Restart Elasticsearch
+
+- name      : Configure initd java option in ../init.d/elasticsearch
+  lineinfile :
+    dest=/etc/init.d/elasticsearch
+    regexp='^(DAEMON_OPTS=".*-Des.max-open-files=true")$'
+    insertafter='^(DAEMON_OPTS=".*CONF_DIR")$'
+    line='DAEMON_OPTS="$DAEMON_OPTS -Des.max-open-files=true"'
+  notify    :
+    Restart Elasticsearch
+
+- name      : Configuration
+  lineinfile:
+    # This is case sensitive, be carefull
+    dest="{{elastcisearch_conf_file}}"
+    line="{{item.line}}"
+    insertafter="{{item.regexp}}"
+    state=present
+  with_items:
+   - { regexp: '^# cluster.name',             line: "cluster.name: {{elastcisearch_cluster_name}}" }
+   - { regexp: '^# node.name',                line: "node.name: {{elastcisearch_cluster_name}}" }
+   - { regexp: '^# http.port:',               line: "http.port: {{elasticsearch_listenning_port}}" }
+   - { regexp: '^# path.data',                line: "path.data: {{elasticsearch_data_dir}}" }
+   - { regexp: '^# path.logs',                line: "path.logs: {{elasticsearch_log_dir}}" }
+   - { regexp: '^# network.host',             line: "network.host: {{elastcisearch_network_host}}" }
+
+
+- name    : Start Elasticsearch at startup
+  service :
+    name='elasticsearch'
+    enabled=yes
+  notify  :
+      Restart Elasticsearch

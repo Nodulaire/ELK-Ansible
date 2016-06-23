@@ -1,0 +1,29 @@
+This file describe what have changed in this playbook version:
+
+- Removed all the tags
+- All variables are now in site.yml
+- The firewall rule are handled in the common role (with UFW)
+- Java is now deployed on each machine before further installation
+- Ports and ip address are now user choice (variables)
+- 'remote_user' is remplaced by 'ansible_user'
+- removed all obsolet 'sudo:' command and use 'become'
+
+
+Still not suported:
+- ELK stacks/multiple nodes
+- So far only ubuntu 16.04LTS is supported
+- Logstash log file creation in the host machine # TO CHECK
+
+TODO :
+- It is impossible now to install the stack on a single machine. Need to add conditional variable to do it.
+- site.yml is hudge, may be split it ?
+- Make a role to delete everything - DO U READ IT ? EVERYTHING
+
+Reported bugs:
+- Time to time the file kibana.yml is not created during the installation in : /opt/kibana/config
+You may need to resinstall manually this file or relaunch the ansible role.
+
+
+U nee dthe last version of ansible:
+http://ansible-tips-and-tricks.readthedocs.io/en/latest/ansible/install/
+pip install ansible==2.1
