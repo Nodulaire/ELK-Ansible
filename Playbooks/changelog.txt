@@ -25,6 +25,6 @@ Reported bugs:
 You may need to resinstall manually this file or relaunch the ansible role.
 
 
-U need the last version of ansible:
+You need the last version of ansible:
 http://ansible-tips-and-tricks.readthedocs.io/en/latest/ansible/install/
 pip install ansible==2.1
