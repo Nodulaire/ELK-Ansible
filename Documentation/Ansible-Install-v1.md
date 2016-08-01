@@ -40,7 +40,7 @@ The language used in playbook is '.yaml', witch is just an optimised XML.
 We choosed here to install the ansible service in a dedicated virtual machine but you can just use your personal computer as ansible server, while you still have access to the deployment server.
 
 Below, the schematic diagram.
-![ansile deployement schema](Images/Ansible/ansible_principe_schema.png)
+![ansile deployement  schema](Images/Ansible/ansible_principe_schema.png)
 
 
 ## Installation

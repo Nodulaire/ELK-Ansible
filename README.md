@@ -34,22 +34,23 @@ Here you are going to find :
 
 ### Principe
 ```
-      ELK Stack Master                                           Client(s)
-______________________________                        ______________________________   
-|                            |                        |                            |  
-|          KIBANA            |                        |          Web Logs          |  ___
-|____________________________|                        |____________________________|    |
-|                            |                        |                            |    |
-|        ElasticSearch       |                        |        Systems Logs        |  __|
-|____________________________|                        |____________________________|    |
-|                            |                        |                            |    |
-|         Logstash           |  <--------|            |        Kernel Logs         |  __|
-|____________________________|           |            |____________________________|    |
-|                            |           |            |                            |    |
-|       Syslog Master        |  <--Client(s) Logs--   |        Local Syslog        |  <-/
-|____________________________|         (TLS)          |____________________________|  
+      ELK Stack Master                                  Legacy Syslog                               Client(s)
+______________________________                     ______________________                     ______________________________   
+|                            |                     |                     |                    |                            |  
+|          KIBANA            |                     |                     |                    |          Web Logs          |  ___
+|____________________________|                     |                     |                    |____________________________|    |
+|                            |                     |    Proof sealing    |                    |                            |    |
+|        ElasticSearch       |                     |                     |                    |        Systems Logs        |  __|
+|____________________________|                     |_____________________|                    |____________________________|    |
+|                            |                     |                     |                    |                            |    |
+|         Logstash           |  <--------|         |                     |                    |        Kernel Logs         |  __|
+|____________________________|           |         |                     |                    |____________________________|    |
+|                            |           |         |    Local Syslog     |                    |                            |    |
+|          Syslog            |  <--Client(s) Logs--|                     | <--Client(s) Logs--|        Local Syslog        |  <-/
+|____________________________|         (TLS)       |_____________________|      (TLS)         |____________________________|  
 ```
- In our solution all the clients send their logs (via TLS) directly to he stack syslog or to a legacy syslog server.
+ In our solution all the clients send their logs (via TLS) directly to a legacy syslog server, and the legace log server forward them to the ELK stack.  
+ The proof sealing mecanism is a legal obligation in most of the europeean countries. 
 
 ### Model installation
 

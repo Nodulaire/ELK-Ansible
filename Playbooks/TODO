@@ -1,7 +1,12 @@
 TODO:
 Ideas who came during the creation of patterns and grocks :
-
 - Create a pattern dir "/etc/logstash/patterns.d/"
 - Open the ports in UFW
 - In logstash/src/* add ansible variables fort port numbers and equipement names
 - See if in logstash output is required in each file or we can put it once in 99-output.conf
+- Start logstash at startup
+- Rename the grock SYSLOGASA in something more appropriate
+- Faire un if qui verifie que la version d'ansible >= 2.1
+
+- Gerer la heap size elasticsearch : ES_HEAP_SIZE={{ item.config.java.heap_size|default('2gb') }}   https://discuss.elastic.co/t/java-heap-space-once-in-a-while/2551/2
+et encore : https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html

@@ -11,7 +11,7 @@ This is not a tutorial or full web server configuration example. Only the loging
 2 - [Sending logs directly to logstash](#sendi3ng-logs-directly-to-logstash)  
 3 - [Debugging](#debugging)  
 4 - [Go further](#go-further)
-    
+
 ## Logs customization   
 The simpliest way to get a custom log for every sites on your server is to define a custom log types in ```/etc/nginx/nginx.conf``` (path may change depending of the installation).
 On this file, in the ```http{}``` bracket  add the following code (before the access_log and error_log prerogative):  

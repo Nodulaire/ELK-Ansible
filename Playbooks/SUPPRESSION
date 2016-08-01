@@ -1,4 +1,4 @@
-# Dirty way to delete thungs. Do not use in production.
+# Dirty way to delete things. Do not use in production.
 
 sudo apt-get --purge remove ufw  logstash   -y      && dpkg-query -W -f='${binary:Package}\n' | grep -E -e '^(ia32-)?(sun|oracle)-java' -e '^openjdk-' -e '^icedtea' -e '^(default|gcj)-j(re|dk)' -e '^gcj-(.*)-j(re|dk)' -e '^java-common'  | xargs sudo apt-get -y remove   && sudo apt autoremove -y
 sudo apt-get --purge remove ufw  kibana nginx -y    && dpkg-query -W -f='${binary:Package}\n' | grep -E -e '^(ia32-)?(sun|oracle)-java' -e '^openjdk-' -e '^icedtea' -e '^(default|gcj)-j(re|dk)' -e '^gcj-(.*)-j(re|dk)' -e '^java-common'  | xargs sudo apt-get -y remove && sudo rm -rf /opt/kibana && sudo apt autoremove -y
