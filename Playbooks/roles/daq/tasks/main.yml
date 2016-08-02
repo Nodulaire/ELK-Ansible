@@ -1,0 +1,26 @@
+---
+- name: Install requiered library
+  apt:
+    name={{item}}
+    state=present
+    update_cache=true
+  with_items:
+    - bison
+    - flex
+    - libpcap-dev
+
+- name: Download DAQ 
+  unarchive: 
+    src={{url_install_daq}}
+    dest={{src_install_directory}}
+    copy=no
+
+- name: Running ./configure for DAQ
+  command: './configure chdir="{{daq_install_directory}}"'
+
+- name: Running make for DAQ
+  command: make chdir="{{daq_install_directory}}"
+
+- name: Running make install for DAQ
+  command: make install chdir="{{daq_install_directory}}"
+

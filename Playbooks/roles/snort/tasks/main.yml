@@ -1,0 +1,86 @@
+---
+- name: Install requiered library
+  apt:
+    name={{item}}
+    state=present
+    update_cache=true
+  with_items:
+    - zlib1g-dev
+    - libpcre3-dev
+    - libdumbnet-dev
+
+- name: Download Snort 
+  unarchive: 
+    src={{url_install_snort}} 
+    dest={{src_install_directory}}
+    copy=no
+
+- name: Running ./configure for SNORT
+  command: ./configure --enable-sourcefire chdir="{{snort_install_directory}}"
+
+- name: Running make for SNORT
+  command: make chdir="{{snort_install_directory}}"
+
+- name: Running make install for SNORT
+  command: make install chdir="{{snort_install_directory}}"
+
+- name: Configuration
+  file:
+    src={{item.src}}
+    dest={{item.dst}}
+    state=link
+  with_items:
+    - {src: '/usr/include/dumbnet.h', dst: '/usr/include/dnet.h'}
+    - {src: '/usr/local/bin/snort', dst: '/usr/sbin/snort'}
+  
+- command: ldconfig
+
+- name: Create snort directory
+  file: 
+     path={{item.name}} 
+     state={{item.type}} 
+     mode=5775
+  with_items:
+    - {name: '{{snort_path}}/rules/preproc_rules',    type: 'directory'}
+    - {name: '{{snort_path}}/rules/white_list.rules', type: 'touch'}
+    - {name: '{{snort_path}}/rules/black_list.rules', type: 'touch'}
+    - {name: '{{snort_path}}/rules/local.rules',      type: 'touch'}
+    - {name: '/var/log/snort',                        type: 'directory'}
+    - {name: '/usr/local/lib/snort_dynamicrules',     type: 'directory'}
+
+- name: Copy snort configuration file
+  copy:
+    src={{ item }}
+    dest={{snort_path}}
+    remote_src=true
+  with_items:
+    - "{{snort_install_directory}}/etc/attribute_table.dtd"
+    - "{{snort_install_directory}}/etc/classification.config"
+    - "{{snort_install_directory}}/etc/file_magic.conf"
+    - "{{snort_install_directory}}/etc/reference.config"
+    - "{{snort_install_directory}}/etc/snort.conf"
+    - "{{snort_install_directory}}/etc/threshold.conf"
+    - "{{snort_install_directory}}/etc/unicode.map"
+    - "{{snort_install_directory}}/etc/gen-msg.map"
+  
+- command: sed -i 's/include \$RULE\_PATH/#include \$RULE\_PATH/' /etc/snort/snort.conf
+ 
+- name: Configuring snort.conf 1/2
+  lineinfile:
+    dest="{{snort_path}}/snort.conf"
+    regexp={{item.reg}}
+    line={{item.line}}
+  with_items:
+    - { line: "ipvar HOME_NET {{snort_home_net}}",                  reg: "ipvar HOME_NET"        }
+    - { line: "ipvar EXTERNAL_NET {{snort_external_net}}",          reg: "ipvar EXTERNAL_NET"    }
+    - { line: "var RULE_PATH {{snort_path}}/rules",                 reg: "var RULE_PATH"         }
+    - { line: "var SO_RULE_PATH {{snort_path}}/so_rules",           reg: "var SO_RULE_PATH"      }
+    - { line: "var PREPROC_RULE_PATH {{snort_path}}/preproc_rules", reg: "var PREPROC_RULE_PATH" }
+    - { line: "var WHITE_LIST_PATH {{snort_path}}/rules",           reg: "var WHITE_LIST_PATH"   }
+    - { line: "var BLACK_LIST_PATH {{snort_path}}/rules",           reg: "var BLACK_LIST_PATH"   }
+
+- name: configuring snort.conf 2/2
+  lineinfile:
+    dest="{{snort_path}}/snort.conf"
+    line={{snort_output}}
+    insertafter='# output unified2{{":"}}'

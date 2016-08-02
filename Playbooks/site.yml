@@ -110,3 +110,68 @@
   roles:
       - nginx
       - kibana
+
+
+#################################################
+################## SNORT PART ###################
+#################################################
+
+
+################### common_snort ############
+- name         : Install common_snort tools
+  hosts        : snort
+  become       : yes
+  become_method: sudo
+  vars:
+     - src_install_directory: "/root/snort_src/"
+  roles:
+     - common_snort
+
+
+################### DAQ  ###################
+- name         : Install DAQ
+  hosts        : snort
+  become       : yes
+  become_method: sudo
+  vars:
+     - daq_version: "daq-2.0.6"
+     - src_install_directory: "/root/snort_src/"
+     - daq_install_directory: "/root/snort_src/{{daq_version}}"
+     - url_install_daq: "https://www.snort.org/downloads/snort/{{daq_version}}.tar.gz"
+     - daq_checksum: "md5:2cd6da422a72c129c685fc4bb848c24c"
+  roles:
+     - daq
+
+################### SNORT ###################
+- name         : Install SNORT
+  hosts        : snort
+  become       : yes
+  become_method: sudo
+  vars:
+     - snort_version: "snort-2.9.8.3"
+     - src_install_directory: "/root/snort_src/"
+     - snort_install_directory: "/root/snort_src/{{snort_version}}"
+     - url_install_snort: "https://www.snort.org/downloads/snort/{{snort_version}}.tar.gz"
+     - snort_path: "/etc/snort/"
+     - snort_home_net: "any"
+     - snort_external_net: "any"
+     - snort_output: "output unified2 : filename merged.log, limit 128"
+  roles:
+     - snort
+
+################### barnyard2 ###################
+- name         : Install barnyard2
+  hosts        : snort
+  become       : yes
+  become_method: sudo
+  vars:
+     - barnyard2_version: "barnyard2-2-1.13"
+     - src_install_directory: "/root/snort_src/"
+     - barnyard2_install_directory: "/root/snort_src/{{barnyard2_version}}"
+     - url_install_barnyard2: "https://github.com/firnsy/barnyard2/archive/v2-1.13.zip"
+     - snort_path: "/etc/snort/"
+     - barnyard2_output: "output alert_prelude: profile=snort"
+  roles:
+     - barnyard2
+
+
