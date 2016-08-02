@@ -156,22 +156,9 @@
      - snort_home_net: "any"
      - snort_external_net: "any"
      - snort_output: "output unified2 : filename merged.log, limit 128"
+     - url_community_rules: "https://www.snort.org/rules/community"
+     - url_registered_rules: "https://www.snort.org/rules/snortrules-snapshot-2983.tar.gz?oinkcode={{oinkcode}}"
   roles:
      - snort
-
-################### barnyard2 ###################
-- name         : Install barnyard2
-  hosts        : snort
-  become       : yes
-  become_method: sudo
-  vars:
-     - barnyard2_version: "barnyard2-2-1.13"
-     - src_install_directory: "/root/snort_src/"
-     - barnyard2_install_directory: "/root/snort_src/{{barnyard2_version}}"
-     - url_install_barnyard2: "https://github.com/firnsy/barnyard2/archive/v2-1.13.zip"
-     - snort_path: "/etc/snort/"
-     - barnyard2_output: "output alert_prelude: profile=snort"
-  roles:
-     - barnyard2
 
 

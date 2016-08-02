@@ -82,5 +82,24 @@
 - name: configuring snort.conf 2/2
   lineinfile:
     dest="{{snort_path}}/snort.conf"
-    line={{snort_output}}
-    insertafter='# output unified2{{":"}}'
+    line={{item.line}}
+    insertafter={{item.insert}}
+  with_items:
+    - { line: "{{snort_output}}", insert : '# output unified2{{":"}}' }
+    - { line: "include $RULE_PATH/community.rules", insert : ""       }
+- name: Download community rules
+  unarchive:
+    copy=no
+    src={{url_community_rules}}
+    dest=/tmp
+
+
+- name: Add community rules
+  copy:
+    src={{ item.src }}
+    dest={{ item.dst }}
+    remote_src=true
+  with_items:
+    - { src: "/tmp/community-rules/sid-msg.map", dst: "{{snort_path}}" }
+    - { src: "/tmp/community-rules/community.rules", dst: "{{snort_path}}/rules/" }
+
