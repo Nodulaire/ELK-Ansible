@@ -15,7 +15,7 @@ Elasticsearch is a search server based on Lucene. It provides a distributed, mul
 
 ## Installation
 
-The Installation of elasticsearch is part of our ELK deployement playbooks. Here we're gonna explain the files contain.
+The Installation of elasticsearch is part of our ELK deployment playbooks. Here we're gonna explain the files contain.
 
 ### Variables file
 
@@ -43,7 +43,7 @@ es_http_port: '9200'
 
 Now I will describe the most significative options :  
 * *es_cfg_file* : This is the path to the file we need to modify.  
-* *es_version* : The version of elasticsearch you want to install (the lastest when I written this document)
+* *es_version* : The version of elasticsearch you want to install (the latest when I written this document)
 * *es_cluster_name* : The name of the hosts cluster
 * *es_node_name* : The name of the node (Host)
 * *es_path_xxx* : File location

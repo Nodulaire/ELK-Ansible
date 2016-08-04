@@ -1,6 +1,6 @@
 # Workflow
 
-The aim of the document is to explain methods used for this project.
+The aim of the document is to explain the methods used for this project.
 
 Be free to contact us at any time. Contact information are available on the main [README](..//README.md).
 Please consider using PGP to contact us. It's a good habit to take ;)
@@ -28,8 +28,8 @@ git push -u origin master (or whatever your developement branch is)
 ### Playbooks
 
 You must respect the *yaml* coding conventions defined below.  
-Each playbooks starts with ```---```. Then we have to indicate the hosts on which we want to deploy the playbook. After we decline all playbook's tasks.
-Here the entire structure :  
+Each playbooks start with ```---```. Then we have to indicate the hosts on which we want to deploy the playbook. After we decline all playbook's tasks.
+Here the entire structure:  
 ```
 ---
 - hosts : NAME
@@ -39,24 +39,24 @@ Here the entire structure :
     - tags : [Tag's name]
 ```
 
-Here *NAME* refers to the cluster of machines define in */etc/ansible/hosts*. You have an example of configuration in [Ansible-Install-v1](Ansible-Install-v1.md).  
-The tag *tags* is optional but it should be useful for debugging.  
+Here *NAME* refers to the cluster of machines define in */etc/ansible/hosts*. You have an example of the configuration in [Ansible-Install-v1](Ansible-Install-v1.md).  
+The tag *tags* is optional, but it should be useful for debugging.  
 Then the *...* is the command you want to execute.  
 Finally the *(...)* means the end of the playbook they are optional.
 
 ### Documentation
 
-Each action realised on the project must be well documented, A project can't survive if nobody understand why its like that at any point in the time. Also we hope that someday few contributors will develop groks modules and add their work.
+Each action realised on the project must be well documented, A project can't survive if nobody understands why its like that at any point in the time. Also, we hope that someday few contributors will develop groks modules and add their work.
 
 **Names**: %SERVICE%-%Doc-Type%-%VERSION%  
 *Examples*:
 - Ansible-Turorial-v2.
 - Logstash-Info-v13.md
 
-To reach as much people as possible all the documentation is written in English.
+To reach as many people as possible all the documentation is written in English.
 
 
 Each document will contain :
 - A short introduction of technology
 - An aim section
-- As many screenshot and code snipet as possible.
+- As many screenshot and code snippets as possible.

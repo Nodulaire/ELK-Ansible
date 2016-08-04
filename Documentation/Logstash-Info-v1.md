@@ -14,11 +14,11 @@ Here we are going to explain the goal of logstash in the ELK stack and we will d
 
 "Logstash is an open source tool for collecting, parsing, and storing logs for future use." Wikipedia
 
-Logtsash collect and process all the log he received. It's support a lot of format but here we are only using syslogformat ( RFC 5424 ) and JSON to get all our logs togethers and understandable for elasticsearch.
+Logtsash collect and process all the log he received. It's support a lot of formats, but here we are only using syslog format ( RFC 5424 ) and JSON to get all our logs together and understandable for elasticsearch.
 
 ## Installation
 
-The Installation of logstash is part of our ELK deployement playbook. Here we're gonna explain the files contain.
+The Installation of logstash is part of our ELK deployment playbook. Here, we are going to explain the files contain.
 ### Variables file
 
 You can find this file [here](../Playbooks/elk/logstash/defaults/logstash_options.yml).
@@ -70,7 +70,7 @@ Then we install logstash package with the function *apt* :
   apt: name=logstash update_cache=yes state=present
   tags: [logstash]
 ```
-Then we copie the ELK server keys (locate in *Playbooks/elk/logstash/src* on the host with a loop and th function copy :
+Then we copie the ELK server keys (locate in *Playbooks/elk/logstash/src* on the host with a loop and the copy function:
 ```yml
 - name: Add ELK Certificates
   copy:
@@ -94,7 +94,7 @@ We also add a logstash conf file from *Playbooks/elk/logstash/src* directory.
     - { copies: "{{logstash_src_conf_path}}/10-syslog.conf" }
   tags: [logstash]
 ```
-This file contain the "parser" for the logs. We use a loop even if there is only one file because it will be easier to add a file.
+This file contains the "parser" for the logs. We use a loop even if there is only one file because it will be easier to add a file.
 
 Then we add the log *rsyslog* to logstash :
 ```yml
@@ -118,7 +118,7 @@ Here the certificate generation :
    tags: [logstash]
 ```
 
-Finally we launch the service on boot then start it with the function *service* :
+Finally, we launch the service at boot, then starts it with the function *service* :
 ```yml
 - name: Start Logstash on Boot
   service: name=logstash enabled=yes

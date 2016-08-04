@@ -2,7 +2,7 @@
 
 ## Aim of the document
 
-Here we gonna see how to deploy the entire ELK Stack on each hosts.
+Here we are going to see how to deploy the entire ELK Stack on each host.
 
 ## Summary
 
@@ -14,7 +14,7 @@ Here we gonna see how to deploy the entire ELK Stack on each hosts.
 
 (The structures showed below are obtained by the *tree* unix command made by Steve Baker).  
 
-Each playbook follow this structure :
+Each playbook follows this structure :
 
 ```
 XXX
@@ -25,7 +25,7 @@ XXX
 
 ```
 
-The file <i> defaults/XXX_options.yml </i> contains all variables (defults values, path, version, etc...) used in <i> tasks/install_XXX.yml </i>.
+The file <i> defaults/XXX_options.yml </i> contains all variables (default values, path, version, etc...) used in <i> tasks/install_XXX.yml </i>.
 
 ## ELK playbooks Skeleton
 
