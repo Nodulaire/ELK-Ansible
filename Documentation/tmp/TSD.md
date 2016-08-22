@@ -90,7 +90,7 @@ Elasticsearch is a search engine based on Lucene. It provides a distributed, mul
 
 #### 2.2.3 About Kibana   
 
-![kibana](Images/llogo-elastic-kibana-lt.png)
+![kibana](Images/logo-elastic-kibana-lt.png)
 
 Architected to work with Elasticsearch, Kibana gives shape to any kind of data — structured and unstructured — indexed into Elasticsearch. It also benefits from Elasticsearch's powerful search and analytics capabilities.  
 
@@ -172,7 +172,7 @@ Refer to the corporate backup policie.
 
 ## 3.5 - Network and flows
 
- |Num|  Source| Destination | Protocol  | Port | Comments
+| Num|  Source| Destination | Protocol  | Port | Comments
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | 1 | All the monitored systems/applications | Logstash servers | TCP/TLS | User defined (>1024) | Main entry point of the SIM |
 | 2| Suricata VM | Logstash servers | TCP/TLS | User defined (>1024) | IPS logs entry |
