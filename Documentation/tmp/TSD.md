@@ -90,7 +90,7 @@ Elasticsearch is a search engine based on Lucene. It provides a distributed, mul
 
 #### 2.2.3 About Kibana   
 
-![kibana](Images/llogo-elastic-kibana-lt.png)
+![kibana](Images/logo-elastic-kibana-lt.png)
 
 Architected to work with Elasticsearch, Kibana gives shape to any kind of data — structured and unstructured — indexed into Elasticsearch. It also benefits from Elasticsearch's powerful search and analytics capabilities.  
 
