@@ -70,7 +70,7 @@ The following sections describe the products and component software available in
 {{appliance-name}} is a solution who aim to provide a SIM (Security Information Management) monitoring plateform, universal and easy to use/deploy.  
 
 #### 2.2.1 About Logstash
-![logstash](Images/logo-elastic-logstash-lt.svg)
+![logstash](Images/logstash_logo.png)
 
 Logstash is a data pipeline that helps you process logs and other event data from a variety of systems. With 200 plugins and counting, Logstash can connect to a variety of sources and stream data at scale to a central analytics system.   
 
@@ -80,7 +80,7 @@ Most logs written by infrastructure and applications have custom formats. Logsta
 
 
 #### 2.2.2 About Elasticsearch
-![elasticsearch](Images/logo-elastic.svg)   
+![elasticsearch](Images/logo-elastic.png)   
 
 Elasticsearch is a search engine based on Lucene. It provides a distributed, multitenant-capable full-text search engine with an HTTP web interface and schema-free JSON documents. It's:
 - Distributed, scalable, and highly available
@@ -90,7 +90,7 @@ Elasticsearch is a search engine based on Lucene. It provides a distributed, mul
 
 #### 2.2.3 About Kibana   
 
-![kibana](Images/logo-elastic-kibana-lt.svg)
+![kibana](Images/llogo-elastic-kibana-lt.png)
 
 Architected to work with Elasticsearch, Kibana gives shape to any kind of data — structured and unstructured — indexed into Elasticsearch. It also benefits from Elasticsearch's powerful search and analytics capabilities.  
 
@@ -101,7 +101,7 @@ Architected to work with Elasticsearch, Kibana gives shape to any kind of data �
 
 #### 2.2.4 About Suricata
 
-![kibana](Images/suricata.gif)
+![suricata](Images/suricata.gif)
 
 Suricata is a high performance Network IDS, IPS and Network Security Monitoring engine. Open Source and owned by a community run non-profit foundation, the Open Information Security Foundation (OISF). Suricata is developed by the OISF and its supporting vendors.
 - Highly Scalable
