@@ -31,11 +31,11 @@
     3.3.2 - [Pro](#Pro)  
     3.3.3 - [Con](#Con)    
   3.4 - [Hardware / software prerequisites](#Hardware / software prerequisites)  
-    3.4.1 - [Hardware requirement comparaison](#Hardware requirement comparaison)    
-    3.4.2 - [Backup](#Backup)
-  3.5 - [Network and flows](#Network and flows)
-  3.6 - [Authentication services](#Authentication services)
-  3.7 - [Security policy & strategy](#Security policy & strategy)
+    3.4.1 - [Hardware requirement comparaison](#Hardware requirement comparaison)     
+    3.4.2 - [Backup](#Backup)  
+  3.5 - [Network and flows](#Network and flows)  
+  3.6 - [Authentication services](#Authentication services)  
+  3.7 - [Security policy & strategy](#Security policy & strategy)  
 
 ---
 

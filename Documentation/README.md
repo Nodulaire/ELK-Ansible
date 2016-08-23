@@ -20,7 +20,7 @@ Here you will find installation examples and tutorial to make all your installat
 
 ## Ansible documentation
 
-[installation and first playbook](Ansible-Install-v1.md)  
+[installation and first playbook](Installation)  
 
 ## What's ELK
 
@@ -28,18 +28,20 @@ ELK is the short nickname for Elasticsearch - Logstash - Kibana who are in order
 
 ### Logstash
 
-[Installation and configuration](Logstash-Info-v1.md)    
+[Installation and configuration](Installation/INM-InstallationManual.md)    
 [Grok examples]()   
 
 ### ElasticSearch
 
-[Installation and configuration](Elasticsearch-Info-v1.md)   
+[Installation and configuration](Installation/INM-InstallationManual.md)   
 
 
 ### Kibana
-[Installation and configuration](Kibana-Info-v1.md)  
+[Installation and configuration](Installation/INM-InstallationManual.md)  
 [Search like a boss]()  
 [How to make to dashboard]()  
+
+---
 
 That's all folks !  
 Thanks for reading,  
