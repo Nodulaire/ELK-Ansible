@@ -29,7 +29,7 @@
   3.3 - [Stacked clusters](#Stacked clusters)  
     3.3.1 - [Design](#Design)  
     3.3.2 - [Pro](#Pro)  
-    3.3.3 - [Con](#Con    
+    3.3.3 - [Con](#Con)    
   3.4 - [Hardware / software prerequisites](#Hardware / software prerequisites)  
     3.4.1 - [Hardware requirement comparaison](#Hardware requirement comparaison)    
     3.4.2 - [Backup](#Backup)

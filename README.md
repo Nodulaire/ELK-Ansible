@@ -1,94 +1,78 @@
-# ELK-Ansible
+# ELK-Ansible  
+
+*Document Control*    
+
+|  Date | Version  | Author  | Change/Addition  |
+|---|---|---|---|
+| 22/08/2016  |1 | Renaud PULIDO  |  Creation |
+
 
 ## AIM
 
 Monitoring should be for everyone. Not only those with money or skills.   
 Here we provide a monitoring plateform, **universal and easy to use**.
 
-Here you are going to find :
+Here you can find :
  - ANSIBLE scripts (automatisation of the installation).
- - Logstash configuration files.
- - Elasticsearch configuration files.
+ - Logstash configuration files (Groks and patterns).
+ - Elasticsearch cluster configuration files.
  - Kibana dashboards (exemples purpose).
- - RSyslog configurations.
- - Plugins exemples for the log forwarding.
+ - RSyslog remote client configurations.
+ - Plugins exemples for the log forwarding (Web, ).
 
 ## Summary
-1 - [Timeline](#timeline)  
-2 - [Architecture](#architecture)  
-2.1 - [Principe](#principe)  
-2.2 - [Model installation](#model-installation)  
-3 - [Pro/Con](#pro/con)  
-3.1 - [Pro](#pro)  
-3.2 - [Con](#con)  
-4 - [Hardware requirement](#hardware-requirement)  
-5 - [Anouncement](#announcement)  
-6 - [Contact](#contact)  
-7 - [TODO](#todo)  
+1 - [Quick-start](#Quick-start)  
+1.1 - [Requirement](#Requirement)  
+1.2 - [Quick-launch](#Quick-launch)  
+2 - [Documentation](#Documentation)  
+3 - [Anouncement](#announcement)  
+4 - [Contact](#contact)  
 
-## Timeline
 
-![timeline](Documentation/Images/Maquette/timeline.png)
+## Quick-start
+### Requirement
+You need *ansible* installed on your computer and a remote server (accessible by ssh) with sudo access and python2.7 installed.
+For further instruction, read the documention **[Ansible-install.md]**(Documentation/Installation/Ansible-Install.md).
 
-## Architecture
+### Quick-launch
 
-### Principe
+Install the playbook :
 ```
-      ELK Stack Master                                  Legacy Syslog                               Client(s)
-______________________________                     ______________________                     ______________________________   
-|                            |                     |                     |                    |                            |  
-|          KIBANA            |                     |                     |                    |          Web Logs          |  ___
-|____________________________|                     |                     |                    |____________________________|    |
-|                            |                     |    Proof sealing    |                    |                            |    |
-|        ElasticSearch       |                     |                     |                    |        Systems Logs        |  __|
-|____________________________|                     |_____________________|                    |____________________________|    |
-|                            |                     |                     |                    |                            |    |
-|         Logstash           |  <--------|         |                     |                    |        Kernel Logs         |  __|
-|____________________________|           |         |                     |                    |____________________________|    |
-|                            |           |         |    Local Syslog     |                    |                            |    |
-|          Syslog            |  <--Client(s) Logs--|                     | <--Client(s) Logs--|        Local Syslog        |  <-/
-|____________________________|         (TLS)       |_____________________|      (TLS)         |____________________________|  
+git clone https://github.com/Nodulaire/ELK-Ansible && cd ELK-Ansible/Playbooks
 ```
- In our solution all the clients send their logs (via TLS) directly to a legacy syslog server, and the legace log server forward them to the ELK stack.  
- The proof sealing mecanism is a legal obligation in most of the europeean countries. 
 
-### Model installation
+Edit the configuration file **[hosts](Playbooks/hosts)** and modify to match your hosts.
+Next, modify the configuration file **[sites.yml](Playbooks/sites.yml)** to match your needs.
 
-There is the infrastructure we use to test our playbooks :
+A detailed exemple is available in **[COI-ConfigurationAndOperationInstruction.md](Documentation/Configuration/COI-ConfigurationAndOperationInstruction.md)**
 
-![Infra-maquette](Documentation/Images/Maquette/infra-maquette.png)
+Eventually, launch the playbook:
+```
+ansible-playbook site.yml -i hosts  --private-key /your/path/to/private/key  -v
+```
+You should see something like this :  
+![Install_ansible](Documentation/Images/Ansible/install_example.png)
 
-## Pro/Con
+## Documentation
 
-### Pro
-
-- Agent less client configuration
-- All log in the syslog standardized format
-- No third party software to install on your servers
-- Lightweight
-- Compatible all Unix/Linux systems
-- Integrity granted (TLS)
-
-### Con
-- Limited to  the supported rsyslog format
-- Specific logs input may need custom groks
-
-## Hardware requirement
-For this first version we are configuring the whole stack into a single (virtual) server. We will script multiple instance/cluster in a second time.
-
-
-- ELK Stack server (all services: Elasticsearch Logstash and Kibana)
-      - OS  : Ubuntu Xenial 16.04 LTS
-      - RAM : 4Go
-      - CPU : 2
-      - Oth : SSH Root access and [python 2.7](http://docs.ansible.com/ansible/faq.html#how-do-i-handle-python-pathing-not-having-a-python-2-x-in-usr-bin-python-on-a-remote-machine) (not installed by default) and an internet connection.  
-
-- Ansible server
-      - RAM : 128Mo or more
-      - OS  : Whatever who support SSH
-      - Oth : Python 2.7
-
-
+For further information you can see our documentation in the *[Documentation](Documentation)* section.
+```
+.
+├── Configuration
+│   └── COI-ConfigurationAndOperationInstruction.md   <-- Configuration tutorial
+├── Images
+├── Information
+│   ├── Elasticsearch-Info.md
+│   ├── Kibana-Info.md
+│   ├── Logstash-Info.md
+│   ├── TSD-TechnicalServiceDescription.md            <-- Technical description of our product
+│   └── Workflow-info.md                              <-- if you want to collaborate
+├── Installation
+│   ├── Ansible-Install.md
+│   ├── ELK-Stack-Deployment.md
+│   └── INM-InstallationManual.md                     <-- main installation guide
+└── README.md                                         <-- summary
+```
 ## Anouncement
 The project isn't ready yet. There is a lot of work left to do. Feel free to join us in our creation !
 
@@ -96,13 +80,13 @@ The project isn't ready yet. There is a lot of work left to do. Feel free to joi
 ## Contact
 This project is made on our spare time be free to contact us at any time.
 
-| Role | Name | Contact | PGP Key signature |
-|-------|------|--------|-------------------|
-|Project architect | **Renaud PULIDO**  | renaud.pulido@gmail.com | 144CFD9A |
-|Project developer | **Boris ROMANOW**  | boris.romanow@gmail.com | 2185AF59 |
+| Role | Pseudonyme | Name | Contact | PGP Key signature |
+|-------|---|---|--------|-------------------|
+|Project architect | Nodulaire | **Renaud PULIDO**  | renaud.pulido@gmail.com | 144CFD9A |
+|Project developer | Boboo   |**Boris ROMANOW**  | boris.romanow@gmail.com | 2185AF59 |
 
 
-### TODO :
-- Provide a docker container per services (not a priority now {25/04/2016})
-- Provide hardware requirement for each stack elements and a few performance test.
-- Make a bug tracker
+---
+That's all folks !  
+Thanks for reading,  
+**Nodulaire**
