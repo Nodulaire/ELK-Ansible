@@ -18,7 +18,7 @@ Here you can find :
  - Elasticsearch cluster configuration files.
  - Kibana dashboards (exemples purpose).
  - RSyslog remote client configurations.
- - Plugins exemples for the log forwarding (Web, ).
+ - Plugins exemples for the log forwarding (Web, VPN, ...).
 
 ## Summary
 1 - [Quick-start](#Quick-start)  
@@ -31,8 +31,8 @@ Here you can find :
 
 ## Quick-start
 ### Requirement
-You need *ansible* installed on your computer and a remote server (accessible by ssh) with sudo access and python2.7 installed.
-For further instruction, read the documention **[Ansible-install.md]**(Documentation/Installation/Ansible-Install.md).
+You need *ansible* installed on your computer and a remote server ubuntu 16.04 LTS (accessible by ssh) with sudo access and python2.7 installed.
+For further instruction, read the documention **[Ansible-install.md]**(../Documentation/Installation/Ansible-Install.md).
 
 ### Quick-launch
 
@@ -42,7 +42,7 @@ git clone https://github.com/Nodulaire/ELK-Ansible && cd ELK-Ansible/Playbooks
 ```
 
 Edit the configuration file **[hosts](Playbooks/hosts)** and modify to match your hosts.
-Next, modify the configuration file **[sites.yml](Playbooks/sites.yml)** to match your needs.
+Next, modify the configuration file **[site.yml](Playbooks/site.yml)** to match your needs.
 
 A detailed exemple is available in **[COI-ConfigurationAndOperationInstruction.md](Documentation/Configuration/COI-ConfigurationAndOperationInstruction.md)**
 
@@ -55,7 +55,7 @@ You should see something like this :
 
 ## Documentation
 
-For further information you can see our documentation in the *[Documentation](Documentation)* section.
+For further information you can see our guides in the *[Documentation](Documentation)* section.
 ```
 .
 ├── Configuration
@@ -73,12 +73,15 @@ For further information you can see our documentation in the *[Documentation](Do
 │   └── INM-InstallationManual.md                     <-- main installation guide
 └── README.md                                         <-- summary
 ```
+
+For the hardware and network requirement see: [inm](Documentation/Installation/INM-InstallationManual.md).  
+
 ## Anouncement
 The project isn't ready yet. There is a lot of work left to do. Feel free to join us in our creation !
 
 
 ## Contact
-This project is made on our spare time be free to contact us at any time.
+Feel free to contact us at any time.
 
 | Role | Pseudonyme | Name | Contact | PGP Key signature |
 |-------|---|---|--------|-------------------|

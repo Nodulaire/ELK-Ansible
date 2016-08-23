@@ -26,11 +26,10 @@ Ansible is a simple IT automation engine that automates cloud provisioning, conf
 3.3 - [Remote hosts configuration](#remote-hosts-configuration)  
 3.4 - [Paquets installation](#paquets-installation)    
 3.5 - [Configuration](#configuration)   
-3.6 - [Connection via ssh-key](#Connection via ssh-key)      
+3.6 - [Connection via ssh-key](#Connection-via-ssh-key)      
 3.6.1 - [Generating an ssh-key](#generating-an-ssh-key)   
 4 - [Host file configuration](#host-file-configuration)    
-5 - [Launching the playbook](#launching-the-playbook)  
-6 - [TODO](#todo)  
+5 - [First playbook](#first-playbook)  
 
 
 ## Principe

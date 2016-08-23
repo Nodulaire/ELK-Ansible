@@ -13,13 +13,13 @@
 ## Table of Contents
 
 1 - [Introduction](#Introduction)   
-  1.1 [Aim of this document](#Aim of the document)   
+  1.1 [Aim of this document](#Aim-of-the-document)   
   1.2 [Audience](#Audience)  
-  1.3 [Revision warning](#Revision warning)   
-2 - [Product deployment](#Product deployment)  
-  2.1 [Targeted OS](#Targeted OS)  
-  2.2 [Hardware requirement](#Hardware requirement)  
-  2.3 [Deployment technologie](#Deployment technologie)  
+  1.3 [Revision warning](#Revision-warning)   
+2 - [Product deployment](#Product-deployment)  
+  2.1 [Targeted OS](#Targeted-OS)  
+  2.2 [Hardware requirement](#Hardware-requirement)  
+  2.3 [Deployment technologie](#Deployment-technologie)  
   2.4 [Pre-configuration](#Pre-configuration)  
 3 - [Installation](#Installation)  
 
@@ -74,7 +74,7 @@ Adapt those variables with the client needs.
 
 ## Installation
 
-Once everything set up, launch the playbook (see the [related topic](https://github.com/Nodulaire/ELK-Ansible/blob/master/Documentation/Ansible-Install-v1.md#launching-the-playbook))  
+Once everything set up, launch the playbook (see the [related topic](Ansible-Install.md))  or in the main page of this project.
 Let the playbook until its finish. It's all done.
 
 Here end the installation manual and start the [Configuration & Operation instruction guide](../Configuration/COI-ConfigurationAndOperationInstruction.md).
