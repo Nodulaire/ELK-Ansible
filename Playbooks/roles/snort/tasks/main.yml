@@ -167,7 +167,7 @@
 
 - name: Create snort service 1/2
   copy:  
-    src="/root/playbooks/snort/roles/snort/src/service"
+    src="roles/snort/src/service"
     dest="{{snort_daemon}}"
     mode=0755
 
@@ -184,7 +184,7 @@
 
 - name: Create u2json service 1/2
   copy:
-    src="/root/playbooks/snort/roles/snort/src/service"
+    src="roles/snort/src/service"
     dest="{{u2json_daemon}}"
     mode=0755  
 
