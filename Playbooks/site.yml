@@ -116,48 +116,45 @@
 ################## SNORT PART ###################
 #################################################
 
-
-################### common_snort ############
-- name         : Install common_snort tools
+- name         : Install SNORT and dependencies
   hosts        : snort
   become       : yes
   become_method: sudo
   vars:
+     # COMMON Variable
      - src_install_directory: "/root/snort_src/"
-  roles:
-     - common_snort
-
-
-################### DAQ  ###################
-- name         : Install DAQ
-  hosts        : snort
-  become       : yes
-  become_method: sudo
-  vars:
+     
+     # DAQ Variable
      - daq_version: "daq-2.0.6"
      - src_install_directory: "/root/snort_src/"
      - daq_install_directory: "/root/snort_src/{{daq_version}}"
      - url_install_daq: "https://www.snort.org/downloads/snort/{{daq_version}}.tar.gz"
      - daq_checksum: "md5:2cd6da422a72c129c685fc4bb848c24c"
-  roles:
-     - daq
-
-################### SNORT ###################
-- name         : Install SNORT
-  hosts        : snort
-  become       : yes
-  become_method: sudo
-  vars:
+     
+     # SNORT Variable
      - snort_version: "snort-2.9.8.3"
-     - src_install_directory: "/root/snort_src/"
+     - snort_network_interface: "ens33"
      - snort_install_directory: "/root/snort_src/{{snort_version}}"
      - url_install_snort: "https://www.snort.org/downloads/snort/{{snort_version}}.tar.gz"
      - snort_path: "/etc/snort/"
-     - snort_home_net: "any"
+     - snort_home_net: "192.168.1.0"
      - snort_external_net: "any"
      - snort_output: "output unified2 : filename merged.log, limit 128"
      - url_community_rules: "https://www.snort.org/rules/community"
      - url_registered_rules: "https://www.snort.org/rules/snortrules-snapshot-2983.tar.gz?oinkcode={{oinkcode}}"
+     - snort_path_log: "/var/log/snort"
+     - snort_binary: "/usr/sbin/snort"
+     - snort_service_name: "snort"
+     - snort_daemon: "/etc/init.d/snort"
+     - snort_daemon_options: "-q -i {{snort_network_interface}} -l {{snort_path_log}} -c {{snort_path}}/snort.conf"
+     - snort_daemon_user: "root"
+     - snort_daemon_name: "snort"
+     - u2json_binary: "/usr/local/bin/idstools-u2json"
+     - u2json_service_name: "idstools-u2json"
+     - u2json_daemon: "/etc/init.d/u2json"
+     - u2json_daemon_options: "--snort-conf {{snort_path}}/snort.conf --directory {{snort_path_log}} --prefix merged.log --follow --output {{snort_path_log}}/alert.json"
+     - u2json_daemon_user: "root"
+     - u2json_daemon_name: "u2json"
   roles:
      - snort
 

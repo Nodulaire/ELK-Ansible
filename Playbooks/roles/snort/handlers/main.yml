@@ -1,0 +1,9 @@
+---
+
+# handle call from snort/tasks/main.yml
+
+- name: enable snort
+  service: name=snort state=started enabled=yes
+
+- name: enable u2json
+  service: name=u2json state=started enabled=yes

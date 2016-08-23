@@ -1,4 +1,66 @@
 ---
+
+#####################################
+########## COMMON_SNORT #############
+#####################################
+
+- name: Install required packages
+  apt:
+    name={{item}}
+    state=present
+    update_cache=true
+  with_items:
+    - aptitude
+    - build-essential
+    - unzip
+    - python-pip
+
+- name: Install idstools
+  pip: name=idstools
+
+- name: Upgrade package
+  apt: upgrade=yes
+
+- name: Creating install directory
+  file:
+     path={{src_install_directory}}
+     state=directory
+     mode=0755
+
+
+#####################################
+################ DAQ ################
+#####################################
+
+- name: Install requiered library
+  apt:
+    name={{item}}
+    state=present
+    update_cache=true
+  with_items:
+    - bison
+    - flex
+    - libpcap-dev
+
+- name: Download DAQ
+  unarchive:
+    src={{url_install_daq}}
+    dest={{src_install_directory}}
+    copy=no
+
+- name: Running ./configure for DAQ
+  command: './configure chdir="{{daq_install_directory}}"'
+
+- name: Running make for DAQ
+  command: make chdir="{{daq_install_directory}}"
+
+- name: Running make install for DAQ
+  command: make install chdir="{{daq_install_directory}}"
+
+#####################################
+############## SNORT ################
+#####################################
+
 - name: Install requiered library
   apt:
     name={{item}}
@@ -31,7 +93,7 @@
     state=link
   with_items:
     - {src: '/usr/include/dumbnet.h', dst: '/usr/include/dnet.h'}
-    - {src: '/usr/local/bin/snort', dst: '/usr/sbin/snort'}
+    - {src: '/usr/local/bin/snort', dst: '{{snort_binary}}' }
   
 - command: ldconfig
 
@@ -45,7 +107,7 @@
     - {name: '{{snort_path}}/rules/white_list.rules', type: 'touch'}
     - {name: '{{snort_path}}/rules/black_list.rules', type: 'touch'}
     - {name: '{{snort_path}}/rules/local.rules',      type: 'touch'}
-    - {name: '/var/log/snort',                        type: 'directory'}
+    - {name: '{{snort_path_log}}',                    type: 'directory'}
     - {name: '/usr/local/lib/snort_dynamicrules',     type: 'directory'}
 
 - name: Copy snort configuration file
@@ -103,3 +165,42 @@
     - { src: "/tmp/community-rules/sid-msg.map", dst: "{{snort_path}}" }
     - { src: "/tmp/community-rules/community.rules", dst: "{{snort_path}}/rules/" }
 
+- name: Create snort service 1/2
+  copy:  
+    src="/root/playbooks/snort/roles/snort/src/service"
+    dest="{{snort_daemon}}"
+    mode=0755
+
+- name: Create snort service 2/2
+  replace:
+    dest="{{snort_daemon}}"
+    regexp={{item.search}}
+    replace={{item.replace}}
+  with_items:
+    - { search: "PATH_EXECUTABLE", replace: "{{snort_binary}}" }
+    - { search: "SERVICE_OPTIONS", replace: "{{snort_daemon_options}}" }
+    - { search: "SERVICE_USER", replace: "{{snort_daemon_user}}" }
+    - { search: "SERVICE_NAME", replace: "{{snort_service_name}}" }
+
+- name: Create u2json service 1/2
+  copy:
+    src="/root/playbooks/snort/roles/snort/src/service"
+    dest="{{u2json_daemon}}"
+    mode=0755  
+
+- name: Create u2json service 2/2
+  replace:
+    dest="{{u2json_daemon}}"
+    regexp={{item.search}}
+    replace={{item.replace}}
+  with_items:
+    - { search: "PATH_EXECUTABLE", replace: "{{u2json_binary}}" }
+    - { search: "SERVICE_OPTIONS", replace: "{{u2json_daemon_options}}" }
+    - { search: "SERVICE_USER", replace: "{{u2json_daemon_user}}" }
+    - { search: "SERVICE_NAME", replace: "{{u2json_service_name}}" }
+
+- name: Reaload services
+  command: systemctl daemon-reload
+  notify :
+    - enable snort  
+    - enable u2json
