@@ -1,5 +1,11 @@
 # Documentation
 
+*Document Control*    
+
+|  Date | Version  | Author  | Change/Addition  |
+|---|---|---|---|
+| 23/08/2016  | 1 | Nodulaire  |  Compliance  |
+
 ## AIM
 
 Here you will find installation examples and tutorial to make all your installation send logs to the ELK stack
@@ -34,3 +40,7 @@ ELK is the short nickname for Elasticsearch - Logstash - Kibana who are in order
 [Installation and configuration](Kibana-Info-v1.md)  
 [Search like a boss]()  
 [How to make to dashboard]()  
+
+That's all folks !  
+Thanks for reading,  
+**Nodulaire**

@@ -24,6 +24,40 @@ Reported bugs:
 - Time to time the file kibana.yml is not created during the installation in : /opt/kibana/config
 You may need to resinstall manually this file or relaunch the ansible role.
 
+TODO:
+Ideas who came during the creation of patterns and grocks :
+- Create a pattern dir "/etc/logstash/patterns.d/"
+- Open the ports in UFW
+- In logstash/src/* add ansible variables fort port numbers and equipement names
+- See if in logstash output is required in each file or we can put it once in 99-output.conf
+- Start logstash at startup
+- Rename the grock SYSLOGASA in something more appropriate
+- Faire un if qui verifie que la version d'ansible >= 2.1
+
+- Gerer la heap size elasticsearch : ES_HEAP_SIZE={{ item.config.java.heap_size|default('2gb') }}   https://discuss.elastic.co/t/java-heap-space-once-in-a-while/2551/2
+et encore : https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html
+
+
+============================================
+TODO: Automatize heap size
+How to change heap size :
+References:
+https://github.com/grigorescu/Brownian/wiki/ElasticSearch-Configuration
+http://www.elasticsearch.org/guide/reference/setup/installation/
+
+Edit the following files to modify memory and file number limits. These instructions assume Ubuntu 10.04, may work on later versions and other distributions/OSes.
+
+/etc/security/limits.conf:
+elasticsearch - nofile 65535
+elasticsearch - memlock unlimited
+
+/etc/default/elasticsearch:
+ES_HEAP_SIZE=512m
+MAX_OPEN_FILES=65535
+MAX_LOCKED_MEMORY=unlimited
+
+/etc/elasticsearch/elasticsearch.yml:
+bootstrap.mlockall: true
 
 You need the last version of ansible:
 http://ansible-tips-and-tricks.readthedocs.io/en/latest/ansible/install/
