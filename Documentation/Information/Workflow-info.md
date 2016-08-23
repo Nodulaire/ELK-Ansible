@@ -43,7 +43,7 @@ Here the entire structure:
     - tags : [Tag's name]
 ```
 
-Here *NAME* refers to the cluster of machines define in */etc/ansible/hosts*. You have an example of the configuration in [Ansible-Install-v1](Ansible-Install-v1.md).  
+Here *NAME* refers to the cluster of machines define in */etc/ansible/hosts*. You have an example of the configuration in [hosts](../../Playbooks/hosts).  
 The tag *tags* is optional, but it should be useful for debugging.  
 Then the *...* is the command you want to execute.  
 Finally the *(...)* means the end of the playbook they are optional.

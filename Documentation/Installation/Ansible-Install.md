@@ -11,7 +11,7 @@
 Ansible is a simple IT automation engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration, and many other IT needs.  
 *ansible.com*  
 
-<center>![ansible logo](Images/Ansible/ansible_logo.png)</center>
+<center>![ansible logo](../Images/Ansible/ansible_logo.png)</center>
 ## Aim of the document
 
   Here we are going to deploy and test a basic ANSIBLE installation. It mean installation from the depository, configuration and test on a remote host. We also create our first basic playbook.
@@ -46,7 +46,7 @@ The language used in playbook is '.yaml', witch is just an optimised XML.
 We choosed here to install the ansible service in a dedicated virtual machine but you can just use your personal computer as ansible server, while you still have access to the deployment server.
 
 Below, the schematic diagram.
-![ansile deployement  schema](Images/Ansible/ansible_principe_schema.png)
+![ansile deployement  schema](../Images/Ansible/ansible_principe_schema.png)
 
 
 ## Installation
@@ -178,8 +178,9 @@ Create a file named ```first.yml```.
 To execute the playbook doP:  
 ``anbile-playbook first.yml``
 You should see something like this:
-![playbook execution](Images/Ansible/ansible_deployement_playbook.png)
+![playbook execution](../Images/Ansible/ansible_deployement_playbook.png)
 
+---
 
 That's all folks !  
 Thanks for reading,  

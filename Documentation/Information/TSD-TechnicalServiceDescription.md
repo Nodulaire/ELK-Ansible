@@ -12,8 +12,8 @@
 
 ## Table of Contents
 
-1 - [Introduction](#Introduction)
-  1.1 [Document purpose](#Document purpose)  
+1 - [Introduction](#Introduction)  
+  1.1 [Document purpose](#Document purpose)    
   1.2 [Audience](#Audience)   
 2 - [ELK Overview](#ELK Overview)   
   2.1 [Open source consideration](#Open source consideration)   
@@ -72,7 +72,7 @@ The following sections describe the products and component software available in
 {{appliance-name}} is a solution who aim to provide a SIM (Security Information Management) monitoring plateform, universal and easy to use/deploy.  
 
 #### About Logstash
-![logstash](Images/logo/logstash_logo.png)
+![logstash](../Images/logo/logstash_logo.png)
 
 Logstash is a data pipeline that helps you process logs and other event data from a variety of systems. With 200 plugins and counting, Logstash can connect to a variety of sources and stream data at scale to a central analytics system.   
 
@@ -82,7 +82,7 @@ Most logs written by infrastructure and applications have custom formats. Logsta
 
 
 #### About Elasticsearch
-![elasticsearch](Images/logo/logo-elastic.png)   
+![elasticsearch](../Images/logo/logo-elastic.png)   
 
 Elasticsearch is a search engine based on Lucene. It provides a distributed, multitenant-capable full-text search engine with an HTTP web interface and schema-free JSON documents. It's:
 - Distributed, scalable, and highly available
@@ -92,7 +92,7 @@ Elasticsearch is a search engine based on Lucene. It provides a distributed, mul
 
 #### About Kibana   
 
-![kibana](Images/logo/logo-elastic-kibana-lt.png)
+![kibana](../Images/logo/logo-elastic-kibana-lt.png)
 
 Architected to work with Elasticsearch, Kibana gives shape to any kind of data — structured and unstructured — indexed into Elasticsearch. It also benefits from Elasticsearch's powerful search and analytics capabilities.  
 
@@ -103,7 +103,7 @@ Architected to work with Elasticsearch, Kibana gives shape to any kind of data �
 
 #### About Suricata
 
-![suricata](Images/logo/suricata.gif)
+![suricata](../Images/logo/suricata.gif)
 
 Suricata is a high performance Network IDS, IPS and Network Security Monitoring engine. Open Source and owned by a community run non-profit foundation, the Open Information Security Foundation (OISF). Suricata is developed by the OISF and its supporting vendors.
 - Highly Scalable
@@ -191,6 +191,7 @@ Concerning the monitoring web interface, no authentification service is installe
 At this point (R&D) no security strategies are planned.
 
 
+---
 
 That's all folks !  
 Thanks for reading,  

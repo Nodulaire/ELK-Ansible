@@ -21,10 +21,10 @@ The Installation of kibana is part of our ELK deployment playbook. It's not furt
 
 ### Keep calm and wait
 Depending on the hardware and connection you may have to wait a few minutes before to see anything interesting. Spam F5 will not help.
-![keep kalm](Images/Kibana/Kibana-info-loading.png)
+![keep kalm](../Images/Kibana/Kibana-info-loading.png)
 
 ### Discover panel
-![discover panel](Images/Kibana/Kibana-info-visualise.png)  
+![discover panel](../Images/Kibana/Kibana-info-visualise.png)  
 
 A lot of information here. You can see on the left bar:
 - The selected fields of the current research ('\*' mean everything).
@@ -35,7 +35,7 @@ On the center:
 - The last raw logs logged.
 
 You can expand the logs to see further with the arrow on the left of the timestamp:
-![expaneded logs](Images/Kibana/Kibana-info-extendedLog.png)
+![expaneded logs](../Images/Kibana/Kibana-info-extendedLog.png)
 
 We can see all the information extracted by logstash from a rsyslog log (in standard log format **rfc 5424**)
 

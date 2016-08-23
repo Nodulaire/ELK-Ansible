@@ -29,7 +29,7 @@ The Installation of elasticsearch is part of our ELK deployment playbooks. Here 
 
 ### Variables file
 
-You can find this file [here](../Playbooks/site.yml).  
+You can find this file [here](../../Playbooks/site.yml).  
 
 ```yml
 # Default variables. Change as needed.
@@ -65,7 +65,7 @@ Obviously each option can be adapted to you architecture.
 
 ### Install file
 
-You can find this file [here](../Playbooks/elk/elasticsearch/tasks/install_elasticsearch.yml). I will describe the main part of the installation.
+You can find this file [here](../../Playbooks/site.yml). I will describe the main part of the installation.
 
 ```yml
 - include_vars: '/home/administrateur/playbooks/elk/elasticsearch/defaults/elasticsearch_options.yml'

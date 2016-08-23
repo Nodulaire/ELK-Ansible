@@ -26,7 +26,7 @@ Logtsash collect and process all the log he received. It's support a lot of form
 The Installation of logstash is part of our ELK deployment playbook. Here, we are going to explain the files contain.
 ### Variables file
 
-You can find this file [here](../Playbooks/elk/logstash/defaults/logstash_options.yml).
+You can find this file [here](../../Playbooks/site.yml).
 
 ```yml
 logstash_version: "2.3"
@@ -42,13 +42,11 @@ As the other playbook we their is the version, the address, and the path of file
 
 ## Sources files
 
-Contrary to other playbooks, logstash integrate the *src* directory. It contains files which we directly transfer to the hosts.
-
-TODO
+Contrary to other playbooks, logstash integrate the *src* directory. It contains files which we directly transfer to the hosts. Those file containes groks and patterns.
 
 ## Install file
 
-You can find this file [here](../Playbooks/elk/logstash/tasks/install_logstash.yml). I will describe the main part of the installation.
+You can find this file [here](../../Playbooks/site.yml). I will describe the main part of the installation.
 
 ```yml
 - include_vars: '/home/administrateur/playbooks/elk/logstash/defaults/llogstash_options.yml'
@@ -75,7 +73,7 @@ Then we install logstash package with the function *apt* :
   apt: name=logstash update_cache=yes state=present
   tags: [logstash]
 ```
-Then we copie the ELK server keys (locate in *Playbooks/elk/logstash/src* on the host with a loop and the copy function:
+Then we copie the ELK server keys (locate in *Playbooks/roles/logstash/src* on the host with a loop and the copy function:
 ```yml
 - name: Add ELK Certificates
   copy:
@@ -88,7 +86,7 @@ Then we copie the ELK server keys (locate in *Playbooks/elk/logstash/src* on the
   tags: [logstash]
   ```
 These certificates will be used in oder to secure the communication between the server and the hosts.  
-We also add a logstash conf file from *Playbooks/elk/logstash/src* directory.
+We also add a logstash conf file from *Playbooks/roles/logstash/src* directory.
 
 ```yml
 - name: Add Logstash Conf
