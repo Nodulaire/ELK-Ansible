@@ -60,8 +60,11 @@ sudo apt-get update
 sudo apt-get upgrade
 ```
 ### Download from repository
-Since ansible is on the ubuntu repository we juste have to:
+Ansible is already availlaible on ubuntu but it's not the lastest  Version. So we have to add the repository :
 ```
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
 sudo apt-get install -y ansible
 ```
 That's all. Your ansible server is ready !
