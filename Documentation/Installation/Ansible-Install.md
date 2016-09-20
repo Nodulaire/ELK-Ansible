@@ -104,7 +104,7 @@ ssh-keygen -t rsa -b 8192
 ```
 Follow the steps, you can use a passphrase to protect the key but it will slow you during the deployement process.
 
-Know copy the key to all remote hosts:
+Now copy the key to all remote hosts:
 ```
 ssh-copy-id root@<host-ip>
 ```
