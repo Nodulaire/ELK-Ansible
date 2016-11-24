@@ -1,8 +1,0 @@
----
-
-# handle call from common/tasks/main.yml
-- name    : Restart UFW
-  service : name=ufw state=restarted
-
-- name    : Restart Elasticsearch
-  service : name=elasticsearch state=restarted
