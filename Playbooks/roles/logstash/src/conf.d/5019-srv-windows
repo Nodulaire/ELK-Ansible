@@ -1,0 +1,40 @@
+input{
+  tcp {
+      mode => server
+      port => 5019
+      type => "windows-server"
+  }
+}
+filter {
+  if [type] == "windows-server" {
+    grok {
+      patterns_dir => [ "/etc/logstash/patterns" ]
+      match => [ "message", "%{cSYSLOG}"]
+    }
+    if "Fermeture de session d’un compte" in [program_message] {
+      grok {
+
+        patterns_dir => [ "/etc/logstash/patterns" ]
+        match => [ "program_message", "%{SESSIONEVENT}" ]
+      }
+      mutate { add_tag => [ "windows_sessions_event" ] }
+    } elseif "La plateforme WPF (Windows Filtering Platform) a autorisé une connexion" in [program_message] {
+      grok {
+        patterns_dir => [ "/etc/logstash/patterns" ]
+        match => [ "program_message", "%{FILTERINGEVENT}" ]
+      }
+      mutate { add_tag => [ "Windows_filtering_platform" ] }
+    } elseif "La synchronisation d’un réplica d’un contexte de nommage Active Directory s’est terminée." in [program_message] {
+      grok {
+        patterns_dir => [ "/etc/logstash/patterns" ]
+        match => [ "program_message", "%{ADREPLICATION}" ]
+      }
+      mutate { add_tag => [ "Windows_DRA_ad_replication" ] }
+    }
+  }
+}
+output {
+  # If your elasticsearch server is discoverable with multicast, use this:
+  # elasticsearch { }
+  elasticsearch { hosts => "10.6.7.232:9200" }
+}

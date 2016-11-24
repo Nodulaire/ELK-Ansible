@@ -1,0 +1,8 @@
+---
+
+# handle call from common/tasks/main.yml
+- name: restart ufw
+  service: name=ufw state=restarted
+
+- name: restart kibana
+  service: name=kibana state=restarted

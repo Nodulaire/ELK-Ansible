@@ -1,0 +1,36 @@
+
+# Working patterns
+# ASA-4-713903
+customCISCOFW713903  IP = %{cIPORHOST:src_ip}, Information Exchange processing failed
+# https://github.com/logstash-plugins/logstash-patterns-core/pull/74/files?diff=split
+# ASA-4-752010
+customCISCOFW752010 IKEv2 Doesn't have a proposal specified
+# ASA-4-313005
+customCISCOFW313005 %{CISCO_REASON:reason} for %{WORD:protocol} error message: %{WORD:err_protocol} src %{DATA:err_src_interface}:%{cIPORHOST:err_src_ip}(\(%{DATA:err_src_fwuser}\))? dst %{DATA:err_dst_interface}:%{cIPORHOST:err_dst_ip}(\(%{DATA:err_dst_fwuser}\))? \(type %{INT:err_icmp_type}, code %{INT:err_icmp_code}\) on %{DATA:interface} interface\.  Original IP payload: %{WORD:protocol} src %{cIPORHOST:orig_src_ip}/%{INT:orig_src_port}(\(%{DATA:orig_src_fwuser}\))? dst %{cIPORHOST:orig_dst_ip}/%{INT:orig_dst_port}(\(%{DATA:orig_dst_fwuser}\))?
+# ASA-6-106015
+customCISCOFW106015 %{CISCO_ACTION:action} %{WORD:protocol} \(%{DATA:policy_id}\) from %{cIPORHOST:src_ip}/%{INT:src_port} to %{cIPORHOST:dst_ip}/%{INT:dst_port} flags %{DATA:tcp_flags} on interface %{GREEDYDATA:interface}
+# ASA-6-302015
+customCISCOFW302013_302014_302015_302016  %{CISCO_ACTION:action}(?: %{CISCO_DIRECTION:direction})? %{WORD:protocol} connection %{INT:connection_id} for %{cIPORHOST:src_interface}:%{cIPORHOST:src_ip}/%{INT:src_port}( \(%{cIPORHOST:src_mapped_ip}/%{INT:src_mapped_port}\))?(\(%{DATA:src_fwuser}\))? to %{DATA:dst_interface}:%{cIPORHOST:dst_ip}/%{INT:dst_port}( \(%{cIPORHOST:dst_mapped_ip}/%{INT:dst_mapped_port}\))?(\(%{DATA:dst_fwuser}\))?( duration %{TIME:duration} bytes %{INT:bytes})?(?: %{CISCO_REASON:reason})?( \(%{DATA:user}\))?
+# ASA-6-302021
+customCISCOFW302020_302021 %{CISCO_ACTION:action}(?: %{CISCO_DIRECTION:direction})? %{WORD:protocol} connection for faddr %{cIPORHOST:dst_ip}/%{INT:icmp_seq_num}(?:\(%{DATA:fwuser}\))? gaddr %{cIPORHOST:src_xlated_ip}/%{INT:icmp_code_xlated} laddr %{cIPORHOST:src_ip}/%{INT:icmp_code}( \(%{DATA:user}\))?
+# ASA-5-304001
+customCISCOFW304001 %{cIPORHOST:srcp_ip} Accessed ( ?%{NOTSPACE:app_name} ?)?URL %{cIPORHOST:dst_ip}:?(%{cURI:dst_url}|)
+# ASA-6-315011
+customCISCOFW315011 SSH session from %{IP:src_ip} on interface %{NOTSPACE:interface} for user "%{USER:user}?" disconnected by SSH server, reason: %{GREEDYDATA:reason}
+# ASA-5-713041
+customCISCOFW713041 IP = %{IP:IKE_ip}, IKE Initiator: New Phase 1, Intf %{WORD:interface}, IKE Peer %{IP:peer_ip}  local Proxy Address %{IP:local_proxy_ip}, remote Proxy Address %{IP:remote_proxy_ip},  Crypto map \(%{GREEDYDATA:crypto_map}\)
+# ASA-5-713904 - Generic Messaging
+customCISCOFW713904 IP = %{IP:peer_ip}, .*
+
+################################################
+# NOK For no reason
+# ASA-5-752004
+customCISCOFW752004 Tunnel Manager dispatching a KEY_ACQUIRE message to IKEv1\. Map Tag = %{NOTSPACE:crypto_map}\. Map Sequence Number = %{INT:crypto_map_sequence_num}\.
+# ASA-3-752015
+customCISCOFW752015 Tunnel Manager has failed to establish an L2L SA. All configured IKE versions failed to establish the tunnel\. Map Tag= %{NOTSPACE:crypto_map}\. Map Sequence Number = %{INT:crypto_map_sequence_num}\.
+# ASA-4-752012
+customCISCOFW752012 IKEv1 was unsuccessful at setting up a tunnel\. Map Tag = %{NOTSPACE:crypto_map}\. Map Sequence Number = %{INT:crypto_map_sequence_num}\.
+
+### TEST ###
+# ASA-6-110002 <--  A surveiller, pas asse d'events pour verifier mtn
+customCISCOFW110002  %{CISCO_REASON:reason} for %{WORD:protocol} from %{DATA:src_interface}:%{cIPORHOST:src_ip}/%{INT:src_port} to %{cIPORHOST:dst_ip}/%{INT:dst_port}

@@ -1,0 +1,13 @@
+## PATTERNS FOR Microsoft-Windows-Security-Auditing IN FRENCH
+
+# Pattern for opening/closing windows sessions event
+SESSIONEVENT %{DATA:event}. Sujet : ID de sécurité : %{DATA:security_ID} Nom du compte : %{NOTSPACE:account_Name} Domaine du compte : %{NOTSPACE:domain} ID du compte : %{NOTSPACE:account_ID} Type d’ouverture de session : %{INT:session_type} %{GREEDYDATA:info}
+
+#Windows filtering Event
+FILTERINGEVENT %{DATA:event} : \tID du processus :\t\t%{INT:processus_id}  \tNom de l’application :\t%{DATA:app_name} Informations sur le réseau :  \tDirection :\t\tEntrant|\t\tSortant Adresse source :\t\t%{IP:src_addr}  \tPort source :\t\t%{INT:src_port}  \tAdresse de destination :\t%{IP:dst_addr}  \tPort de destination :\t\t%{INT:dst_port}  \tProtocole :\t\t%{INT:proto_id} Informations sur le filtre :  \tID d’exécution du filtre :\t%{INT:filter_id}  \tNom de la couche :\t\t(Réception/Acceptation|Connexion)  \tID d’exécution de la couche :\t%{INT:layer_id}
+
+# AD naming context replication
+ADREPLICATION %{DATA:event}. DRA de destination : %{GREEDYDATA:dst_DRA} DRA source : %{GREEDYDATA:src_DRA} Contexte de nommage : %{GREEDYDATA:context} Options : %{INT:option_id} ID de session : %{INT:session_id} USN de fin : %{INT:usn_end} Code d’état : %{INT:status_code}
+
+
+# https://www.ddreier.com/logstash-configuration-dissection/

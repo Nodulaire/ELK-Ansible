@@ -1,0 +1,206 @@
+---
+
+#####################################
+########## COMMON_SNORT #############
+#####################################
+
+- name: Install required packages
+  apt:
+    name={{item}}
+    state=present
+    update_cache=true
+  with_items:
+    - aptitude
+    - build-essential
+    - unzip
+    - python-pip
+
+- name: Install idstools
+  pip: name=idstools
+
+- name: Upgrade package
+  apt: upgrade=yes
+
+- name: Creating install directory
+  file:
+     path={{src_install_directory}}
+     state=directory
+     mode=0755
+
+
+#####################################
+################ DAQ ################
+#####################################
+
+- name: Install requiered library
+  apt:
+    name={{item}}
+    state=present
+    update_cache=true
+  with_items:
+    - bison
+    - flex
+    - libpcap-dev
+
+- name: Download DAQ
+  unarchive:
+    src={{url_install_daq}}
+    dest={{src_install_directory}}
+    copy=no
+
+- name: Running ./configure for DAQ
+  command: './configure chdir="{{daq_install_directory}}"'
+
+- name: Running make for DAQ
+  command: make chdir="{{daq_install_directory}}"
+
+- name: Running make install for DAQ
+  command: make install chdir="{{daq_install_directory}}"
+
+#####################################
+############## SNORT ################
+#####################################
+
+- name: Install requiered library
+  apt:
+    name={{item}}
+    state=present
+    update_cache=true
+  with_items:
+    - zlib1g-dev
+    - libpcre3-dev
+    - libdumbnet-dev
+
+- name: Download Snort 
+  unarchive: 
+    src={{url_install_snort}} 
+    dest={{src_install_directory}}
+    copy=no
+
+- name: Running ./configure for SNORT
+  command: ./configure --enable-sourcefire chdir="{{snort_install_directory}}"
+
+- name: Running make for SNORT
+  command: make chdir="{{snort_install_directory}}"
+
+- name: Running make install for SNORT
+  command: make install chdir="{{snort_install_directory}}"
+
+- name: Configuration
+  file:
+    src={{item.src}}
+    dest={{item.dst}}
+    state=link
+  with_items:
+    - {src: '/usr/include/dumbnet.h', dst: '/usr/include/dnet.h'}
+    - {src: '/usr/local/bin/snort', dst: '{{snort_binary}}' }
+  
+- command: ldconfig
+
+- name: Create snort directory
+  file: 
+     path={{item.name}} 
+     state={{item.type}} 
+     mode=5775
+  with_items:
+    - {name: '{{snort_path}}/rules/preproc_rules',    type: 'directory'}
+    - {name: '{{snort_path}}/rules/white_list.rules', type: 'touch'}
+    - {name: '{{snort_path}}/rules/black_list.rules', type: 'touch'}
+    - {name: '{{snort_path}}/rules/local.rules',      type: 'touch'}
+    - {name: '{{snort_path_log}}',                    type: 'directory'}
+    - {name: '/usr/local/lib/snort_dynamicrules',     type: 'directory'}
+
+- name: Copy snort configuration file
+  copy:
+    src={{ item }}
+    dest={{snort_path}}
+    remote_src=true
+  with_items:
+    - "{{snort_install_directory}}/etc/attribute_table.dtd"
+    - "{{snort_install_directory}}/etc/classification.config"
+    - "{{snort_install_directory}}/etc/file_magic.conf"
+    - "{{snort_install_directory}}/etc/reference.config"
+    - "{{snort_install_directory}}/etc/snort.conf"
+    - "{{snort_install_directory}}/etc/threshold.conf"
+    - "{{snort_install_directory}}/etc/unicode.map"
+    - "{{snort_install_directory}}/etc/gen-msg.map"
+  
+- command: sed -i 's/include \$RULE\_PATH/#include \$RULE\_PATH/' /etc/snort/snort.conf
+ 
+- name: Configuring snort.conf 1/2
+  lineinfile:
+    dest="{{snort_path}}/snort.conf"
+    regexp={{item.reg}}
+    line={{item.line}}
+  with_items:
+    - { line: "ipvar HOME_NET {{snort_home_net}}",                  reg: "ipvar HOME_NET"        }
+    - { line: "ipvar EXTERNAL_NET {{snort_external_net}}",          reg: "ipvar EXTERNAL_NET"    }
+    - { line: "var RULE_PATH {{snort_path}}/rules",                 reg: "var RULE_PATH"         }
+    - { line: "var SO_RULE_PATH {{snort_path}}/so_rules",           reg: "var SO_RULE_PATH"      }
+    - { line: "var PREPROC_RULE_PATH {{snort_path}}/preproc_rules", reg: "var PREPROC_RULE_PATH" }
+    - { line: "var WHITE_LIST_PATH {{snort_path}}/rules",           reg: "var WHITE_LIST_PATH"   }
+    - { line: "var BLACK_LIST_PATH {{snort_path}}/rules",           reg: "var BLACK_LIST_PATH"   }
+
+- name: configuring snort.conf 2/2
+  lineinfile:
+    dest="{{snort_path}}/snort.conf"
+    line={{item.line}}
+    insertafter={{item.insert}}
+  with_items:
+    - { line: "{{snort_output}}", insert : '# output unified2{{":"}}' }
+    - { line: "include $RULE_PATH/community.rules", insert : ""       }
+- name: Download community rules
+  unarchive:
+    copy=no
+    src={{url_community_rules}}
+    dest=/tmp
+
+
+- name: Add community rules
+  copy:
+    src={{ item.src }}
+    dest={{ item.dst }}
+    remote_src=true
+  with_items:
+    - { src: "/tmp/community-rules/sid-msg.map", dst: "{{snort_path}}" }
+    - { src: "/tmp/community-rules/community.rules", dst: "{{snort_path}}/rules/" }
+
+- name: Create snort service 1/2
+  copy:  
+    src="roles/snort/src/service"
+    dest="{{snort_daemon}}"
+    mode=0755
+
+- name: Create snort service 2/2
+  replace:
+    dest="{{snort_daemon}}"
+    regexp={{item.search}}
+    replace={{item.replace}}
+  with_items:
+    - { search: "PATH_EXECUTABLE", replace: "{{snort_binary}}" }
+    - { search: "SERVICE_OPTIONS", replace: "{{snort_daemon_options}}" }
+    - { search: "SERVICE_USER", replace: "{{snort_daemon_user}}" }
+    - { search: "SERVICE_NAME", replace: "{{snort_service_name}}" }
+
+- name: Create u2json service 1/2
+  copy:
+    src="roles/snort/src/service"
+    dest="{{u2json_daemon}}"
+    mode=0755  
+
+- name: Create u2json service 2/2
+  replace:
+    dest="{{u2json_daemon}}"
+    regexp={{item.search}}
+    replace={{item.replace}}
+  with_items:
+    - { search: "PATH_EXECUTABLE", replace: "{{u2json_binary}}" }
+    - { search: "SERVICE_OPTIONS", replace: "{{u2json_daemon_options}}" }
+    - { search: "SERVICE_USER", replace: "{{u2json_daemon_user}}" }
+    - { search: "SERVICE_NAME", replace: "{{u2json_service_name}}" }
+
+- name: Reaload services
+  command: systemctl daemon-reload
+  notify :
+    - enable snort  
+    - enable u2json
