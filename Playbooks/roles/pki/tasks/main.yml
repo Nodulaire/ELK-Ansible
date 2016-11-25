@@ -1,0 +1,565 @@
+---
+
+  - name: Check Install OPENSSL
+    apt: name=openssl state=present update_cache=true
+
+  - name: Creating Directories
+    file:
+      path={{item.name}}
+      state={{item.type}}
+      mode=775
+    with_items:
+      - {name: '{{dir_pki}}',               type: 'directory'}
+      - {name: '{{dir_crl}}',               type: 'directory'}
+      - {name: '{{dir_ca}}',                type: 'directory'}
+      - {name: '{{dir_certs}}',             type: 'directory'}
+
+      - {name: '{{dir_rootca}}',            type: 'directory'}
+      - {name: '{{dir_intca}}',             type: 'directory'}
+      - {name: '{{dir_infraca}}',           type: 'directory'}
+      - {name: '{{dir_clientca}}',          type: 'directory'}
+
+      - {name: '{{dir_conf}}',              type: 'directory'}
+      - {name: '{{conf_rootca}}',           type: 'touch'}
+      - {name: '{{conf_intca}}',            type: 'touch'}
+      - {name: '{{conf_infraca}}',          type: 'touch'}
+      - {name: '{{conf_clientca}}',         type: 'touch'}
+      - {name: '{{conf_client}}',           type: 'touch'}
+
+      - {name: '{{dir_rootca_db}}',         type: 'directory'}
+      - {name: '{{dir_intca_db}}',          type: 'directory'}
+      - {name: '{{dir_infraca_db}}',        type: 'directory'}
+      - {name: '{{dir_clientca_db}}',       type: 'directory'}
+
+      - {name: '{{dir_rootca_certs}}',      type: 'directory'}
+      - {name: '{{dir_intca_certs}}',       type: 'directory'}
+      - {name: '{{dir_infraca_certs}}',     type: 'directory'}
+      - {name: '{{dir_clientca_certs}}',    type: 'directory'}
+
+      - {name: '{{file_rootca_crt}}',       type: 'touch'}
+      - {name: '{{file_rootca_db}}',        type: 'touch'}
+      - {name: '{{file_rootca_dbattr}}',    type: 'touch'}
+      - {name: '{{file_rootca_crl}}',       type: 'touch'}
+
+      - {name: '{{file_intca_crt}}',        type: 'touch'}
+      - {name: '{{file_intca_db}}',         type: 'touch'}
+      - {name: '{{file_intca_dbattr}}',     type: 'touch'}
+      - {name: '{{file_intca_crl}}',        type: 'touch'}
+
+      - {name: '{{file_infraca_crt}}',      type: 'touch'}
+      - {name: '{{file_infraca_db}}',       type: 'touch'}
+      - {name: '{{file_infraca_dbattr}}',   type: 'touch'}
+      - {name: '{{file_infraca_crl}}',      type: 'touch'}
+
+      - {name: '{{file_clientca_crt}}',     type: 'touch'}
+      - {name: '{{file_clientca_db}}',      type: 'touch'}
+      - {name: '{{file_clientca_dbattr}}',  type: 'touch'}
+      - {name: '{{file_clientca_crl}}',     type: 'touch'}
+
+  - name: Creating Private Directories
+    file:
+      path={{item.name}}
+      state={{item.type}}
+      mode=700
+    with_items:
+      - {name: '{{dir_rootca_priv}}',       type: 'directory'}
+      - {name: '{{dir_intca_priv}}',        type: 'directory'}
+      - {name: '{{dir_infraca_priv}}',      type: 'directory'}
+      - {name: '{{dir_clientca_priv}}',     type: 'directory'}
+
+  - name: Adding values
+    lineinfile:
+      dest={{item.name}}
+      line={{item.value}}
+    with_items:
+      - {name: '{{file_rootca_crt}}',   value: '01'}
+      - {name: '{{file_rootca_crl}}',   value: '01'}
+      - {name: '{{file_intca_crt}}',    value: '01'}
+      - {name: '{{file_intca_crl}}',    value: '01'}
+      - {name: '{{file_infraca_crt}}',  value: '01'}
+      - {name: '{{file_infraca_crl}}',  value: '01'}
+      - {name: '{{file_clientca_crt}}', value: '01'}
+      - {name: '{{file_clientca_crl}}', value: '01'}
+
+
+  - name: "{{name_rootca}} Conf File"
+    blockinfile: |
+      dest='{{conf_rootca}}'
+      content="
+      [ default ]
+      ca                      = RootCA
+      dir                     = /root/pki/ca
+      name_opt                = multiline,-esc_msb,utf8
+
+      [ req ]
+      default_bits            = 8192
+      encrypt_key             = yes
+      default_md              = sha1
+      utf8                    = yes
+      string_mask             = utf8only
+      prompt                  = no
+      distinguished_name      = ca_dn
+      req_extensions          = ca_reqext
+
+      [ ca_dn ]
+      countryName             = FR
+      organizationName        = ENSIBS
+      organizationalUnitName  = DevTeam
+      commonName              = Root CA
+
+      [ ca_reqext ]
+      keyUsage                = critical,keyCertSign,cRLSign
+      basicConstraints        = critical,CA:true
+      subjectKeyIdentifier    = hash
+
+      [ ca ]
+      default_ca              = root_ca
+
+      [ root_ca ]
+      certificate             = $dir/$ca/$ca.crt
+      private_key             = $dir/$ca/private/$ca.key
+      new_certs_dir           = $dir/$ca/certs
+      serial                  = $dir/$ca/db/$ca.crt.srl
+      crlnumber               = $dir/$ca/db/$ca.crl.srl
+      database                = $dir/$ca/db/$ca.db
+      unique_subject          = no
+      default_days            = 18260
+      default_md              = sha512
+      policy                  = match_pol
+      email_in_dn             = no
+      preserve                = no
+      name_opt                = $name_opt
+      cert_opt                = ca_default
+      copy_extensions         = none
+      x509_extensions         = intermediate_ca_ext
+      default_crl_days        = 30
+      crl_extensions          = crl_ext
+
+      [ match_pol ]
+      countryName             = match
+      stateOrProvinceName     = optional
+      localityName            = optional
+      organizationName        = match
+      organizationalUnitName  = optional
+      commonName              = supplied
+
+      [ any_pol ]
+      domainComponent         = optional
+      countryName             = optional
+      stateOrProvinceName     = optional
+      localityName            = optional
+      organizationName        = optional
+      organizationalUnitName  = optional
+      commonName              = optional
+      emailAddress            = optional
+
+
+      [ root_ca_ext ]
+      keyUsage                = critical,keyCertSign,cRLSign
+      basicConstraints        = critical,CA:true
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+
+      [ intermediate_ca_ext ]
+      keyUsage                = critical,keyCertSign,cRLSign
+      basicConstraints        = critical,CA:true
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+
+      [ crl_ext ]
+      authorityKeyIdentifier  = keyid:always"
+
+
+  - name: "{{name_intca}} Conf File"
+    blockinfile: |
+      dest='{{conf_intca}}'
+      content="
+      [ default ]
+      ca                      = IntCA
+      dir                     = /root/pki/ca
+      name_opt                = multiline,-esc_msb,utf8
+
+      [ req ]
+      default_bits            = 8192
+      encrypt_key             = yes
+      default_md              = sha1
+      utf8                    = yes
+      string_mask             = utf8only
+      prompt                  = no
+      distinguished_name      = ca_dn
+      req_extensions          = ca_reqext
+
+      [ ca_dn ]
+      countryName             = FR
+      organizationName        = ENSIBS
+      organizationalUnitName  = DevTeam
+      commonName              = Int CA
+
+      [ ca_reqext ]
+      keyUsage                = critical,keyCertSign,cRLSign
+      basicConstraints        = critical,CA:true
+      subjectKeyIdentifier    = hash
+
+      [ ca ]
+      default_ca              = int_ca
+
+      [ int_ca ]
+      certificate             = $dir/$ca/$ca.crt
+      private_key             = $dir/$ca/private/$ca.key
+      new_certs_dir           = $dir/$ca/certs
+      serial                  = $dir/$ca/db/$ca.crt.srl
+      crlnumber               = $dir/$ca/db/$ca.crl.srl
+      database                = $dir/$ca/db/$ca.db
+      unique_subject          = no
+      default_days            = 18260
+      default_md              = sha512
+      policy                  = match_pol
+      email_in_dn             = no
+      preserve                = no
+      name_opt                = $name_opt
+      cert_opt                = ca_default
+      copy_extensions         = none
+      x509_extensions         = signing_ca_ext
+      default_crl_days        = 30
+      crl_extensions          = crl_ext
+
+      [ match_pol ]
+      countryName             = match
+      stateOrProvinceName     = optional
+      localityName            = optional
+      organizationName        = match
+      organizationalUnitName  = optional
+      commonName              = supplied
+
+      [ any_pol ]
+      domainComponent         = optional
+      countryName             = optional
+      stateOrProvinceName     = optional
+      localityName            = optional
+      organizationName        = optional
+      organizationalUnitName  = optional
+      commonName              = optional
+      emailAddress            = optional
+
+      [ intermediate_ca_ext ]
+      keyUsage                = critical,keyCertSign,cRLSign
+      basicConstraints        = critical,CA:true
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+
+      [ signing_ca_ext ]
+      keyUsage                = critical,keyCertSign,cRLSign
+      basicConstraints        = critical,CA:true,pathlen:0
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+
+      [ crl_ext ]
+      authorityKeyIdentifier  = keyid:always"
+
+
+  - name: "{{name_infraca}} Conf File"
+    blockinfile: |
+      dest='{{conf_infraca}}'
+      content="
+      [ default ]
+      ca                      = InfraCA
+      dir                     = /root/pki/ca
+      base_url                = http://pki.infra.fr
+      aia_url                 = $base_url/$ca.cer
+      crl_url                 = $base_url/$ca.crl
+      name_opt                = multiline,-esc_msb,utf8
+
+      [ req ]
+      default_bits            = 4192
+      encrypt_key             = yes
+      default_md              = sha512
+      utf8                    = yes
+      string_mask             = utf8only
+      prompt                  = no
+      distinguished_name      = ca_dn
+      req_extensions          = ca_reqext
+
+      [ ca_dn ]
+      countryName             = FR
+      organizationName        = ENSIBS
+      organizationalUnitName  = DevTeam
+      commonName              = Infra CA
+
+      [ ca_reqext ]
+      keyUsage                = critical,keyCertSign,cRLSign
+      basicConstraints        = critical,CA:true,pathlen:0
+      subjectKeyIdentifier    = hash
+
+      [ ca ]
+      default_ca              = infra_ca
+
+      [ infra_ca ]
+      certificate             = $dir/$ca/$ca.crt
+      private_key             = $dir/$ca/private/$ca.key
+      new_certs_dir           = $dir/$ca/certs
+      serial                  = $dir/$ca/db/$ca.crt.srl
+      crlnumber               = $dir/$ca/db/$ca.crl.srl
+      database                = $dir/$ca/db/$ca.db
+      unique_subject          = no
+      default_days            = 30
+      default_md              = sha512
+      policy                  = match_pol
+      email_in_dn             = no
+      preserve                = no
+      name_opt                = $name_opt
+      cert_opt                = ca_default
+      copy_extensions         = copy
+      x509_extensions         = identity_ext
+      default_crl_days        = 1
+      crl_extensions          = crl_ext
+
+      [ match_pol ]
+      countryName             = match
+      stateOrProvinceName     = optional
+      localityName            = optional
+      organizationName        = match
+      organizationalUnitName  = optional
+      commonName              = supplied
+
+      [ any_pol ]
+      domainComponent         = optional
+      countryName             = optional
+      stateOrProvinceName     = optional
+      localityName            = optional
+      organizationName        = optional
+      organizationalUnitName  = optional
+      commonName              = optional
+      emailAddress            = optional
+
+      [ identity_ext ]
+      keyUsage                = critical,digitalSignature
+      basicConstraints        = CA:false
+      extendedKeyUsage        = emailProtection,clientAuth,msSmartcardLogin
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+      authorityInfoAccess     = @issuer_info
+      crlDistributionPoints   = @crl_info
+
+      [ encryption_ext ]
+      keyUsage                = critical,keyEncipherment
+      basicConstraints        = CA:false
+      extendedKeyUsage        = emailProtection,msEFS
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+      authorityInfoAccess     = @issuer_info
+      crlDistributionPoints   = @crl_info
+
+      [ crl_ext ]
+      authorityKeyIdentifier  = keyid:always
+      authorityInfoAccess     = @issuer_info
+
+      [ issuer_info ]
+      caIssuers;URI.0         = $aia_url
+
+      [ crl_info ]
+      URI.0                   = $crl_url"
+
+
+  - name: "{{name_clientca}} Conf File"
+    blockinfile: |
+      dest='{{conf_clientca}}'
+      content="
+      [ default ]
+      ca                      = ClientCA
+      dir                     = /root/pki/ca
+      base_url                = http://pki.client.fr
+      aia_url                 = $base_url/$ca.cer
+      crl_url                 = $base_url/$ca.crl
+      name_opt                = multiline,-esc_msb,utf8
+
+      [ req ]
+      default_bits            = 8192
+      encrypt_key             = yes
+      default_md              = sha512
+      utf8                    = yes
+      string_mask             = utf8only
+      prompt                  = no
+      distinguished_name      = ca_dn
+      req_extensions          = ca_reqext
+
+      [ ca_dn ]
+      countryName             = FR
+      organizationName        = ENSIBS
+      organizationalUnitName  = DevTeam
+      commonName              = Client CA
+
+      [ ca_reqext ]
+      keyUsage                = critical,keyCertSign,cRLSign
+      basicConstraints        = critical,CA:true,pathlen:0
+      subjectKeyIdentifier    = hash
+
+      [ ca ]
+      default_ca              = client_ca
+
+      [ client_ca ]
+      certificate             = $dir/$ca/$ca.crt
+      private_key             = $dir/$ca/private/$ca.key
+      new_certs_dir           = $dir/$ca/certs
+      serial                  = $dir/$ca/db/$ca.crt.srl
+      crlnumber               = $dir/$ca/db/$ca.crl.srl
+      database                = $dir/$ca/db/$ca.db
+      unique_subject          = no
+      default_days            = 30
+      default_md              = sha512
+      policy                  = match_pol
+      email_in_dn             = no
+      preserve                = no
+      name_opt                = $name_opt
+      cert_opt                = ca_default
+      copy_extensions         = copy
+      x509_extensions         = server_ext
+      default_crl_days        = 1
+      crl_extensions          = crl_ext
+
+      [ match_pol ]
+      countryName             = match
+      stateOrProvinceName     = optional
+      localityName            = optional
+      organizationName        = match
+      organizationalUnitName  = optional
+      commonName              = supplied
+
+      [ any_pol ]
+      domainComponent         = optional
+      countryName             = optional
+      stateOrProvinceName     = optional
+      localityName            = optional
+      organizationName        = optional
+      organizationalUnitName  = optional
+      commonName              = optional
+      emailAddress            = optional
+
+      [ server_ext ]
+      keyUsage                = critical,digitalSignature,keyEncipherment
+      basicConstraints        = CA:false
+      extendedKeyUsage        = serverAuth,clientAuth
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+      authorityInfoAccess     = @ocsp_info
+      crlDistributionPoints   = @crl_info
+      certificatePolicies     = blueMediumDevice
+
+      [ client_ext ]
+      keyUsage                = critical,digitalSignature
+      basicConstraints        = CA:false
+      extendedKeyUsage        = clientAuth
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+      crlDistributionPoints   = @crl_info
+
+      [ timestamp_ext ]
+      keyUsage                = critical,digitalSignature
+      basicConstraints        = CA:false
+      extendedKeyUsage        = critical,timeStamping
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always
+      authorityInfoAccess     = @issuer_info
+      crlDistributionPoints   = @crl_info
+
+      [ crl_ext ]
+      authorityKeyIdentifier  = keyid:always
+      authorityInfoAccess     = @issuer_info
+
+      [ issuer_info ]
+      caIssuers;URI.0         = $aia_url
+
+      [ crl_info ]
+      URI.0                   = $crl_url"
+
+  - name: "{{name_client}} Conf File"
+    blockinfile: |
+      dest='{{conf_client}}'
+      content="
+      [ req ]
+      default_bits                = 4096
+      encrypt_key                 = yes
+      default_md                  = bcrypt
+      utf8                        = yes
+      string_mask                 = utf8only
+      prompt                      = yes
+      distinguished_name          = id_dn
+      req_extensions              = id_reqext
+
+      [ id_dn ]
+      countryName                 = Country Name (2 letters)
+      countryName_max             = 2
+      countreName_default         = FR
+      stateOrProvinceName         = State or Province Name
+      stateOrProvinceName_default = Bretagne
+      localityName                = Locality Name
+      localityName_default        = Vannes
+      organizationName_default    = ENSIBS
+      organizationalUnitName      = Organizational Unit Name
+      organizationalUnitName      = DevTeam
+      commonName                  = Common Name
+      commonName_default          = Toto
+      commonName_max              = 64
+      emailAddress                = Email Address
+      emailAddress_max            = 40
+
+      [ id_reqext ]
+      keyUsage                    = critical,digitalSignature
+      extendedKeyUsage            = emailProtection,clientAuth
+      subjectKeyIdentifier        = hash
+      subjectAltName              = email:move"
+
+
+
+
+  - name: "{{name_rootca}} Generate Key"
+    command: "openssl req -new -config {{conf_rootca}} -nodes -out {{dir_rootca}}/{{name_rootca}}.csr -keyout {{dir_rootca_priv}}/{{name_rootca}}.key"
+
+  - name: "{{name_rootca}} Sign Cert"
+    command: "openssl ca -selfsign -batch -config {{conf_rootca}} -in {{dir_rootca}}/{{name_rootca}}.csr -out {{dir_rootca}}/{{name_rootca}}.crt -extensions root_ca_ext"
+
+  - name: "{{name_rootca}} Generate CRL"
+    command: "openssl ca -gencrl -config {{conf_rootca}} -out {{dir_crl}}/{{name_rootca}}.crl"
+
+
+
+  - name: "{{name_intca}} Generate Key"
+    command: "openssl req -new -config {{conf_intca}} -nodes -out {{dir_intca}}/{{name_intca}}.csr -keyout {{dir_intca_priv}}/{{name_intca}}.key"
+
+  - name: "{{name_intca}} Sign Cert"
+    command: "openssl ca -batch -config {{conf_rootca}} -in {{dir_intca}}/{{name_intca}}.csr -out {{dir_intca}}/{{name_intca}}.crt -extensions intermediate_ca_ext"
+
+  - name: "{{name_intca}} Generate CRL"
+    command: "openssl ca -gencrl -config {{conf_intca}} -out {{dir_crl}}/{{name_intca}}.crl"
+
+
+
+  - name: "{{name_infraca}} Generate Key"
+    command: "openssl req -new -config {{conf_intca}} -nodes -out {{dir_infraca}}/{{name_infraca}}.csr -keyout {{dir_infraca_priv}}/{{name_infraca}}.key"
+
+  - name: "{{name_infraca}} Sign Cert"
+    command: "openssl ca -batch -config {{conf_intca}} -in {{dir_infraca}}/{{name_infraca}}.csr -out {{dir_infraca}}/{{name_infraca}}.crt -extensions signing_ca_ext"
+
+  - name: "{{name_infraca}} Generate CRL"
+    command: "openssl ca -gencrl -config {{conf_infraca}} -out {{dir_crl}}/{{name_infraca}}.crl"
+
+
+
+  - name: "{{name_clientca}} Generate Key"
+    command: "openssl req -new -config {{conf_intca}} -nodes -out {{dir_clientca}}/{{name_clientca}}.csr -keyout {{dir_clientca_priv}}/{{name_clientca}}.key"
+
+  - name: "{{name_clientca}} Sign Cert"
+    command: "openssl ca -batch -config {{conf_intca}} -in {{dir_clientca}}/{{name_clientca}}.csr -out {{dir_clientca}}/{{name_clientca}}.crt -extensions signing_ca_ext"
+
+  - name: "{{name_clientca}} Generate CRL"
+    command: "openssl ca -gencrl -config {{conf_clientca}} -out {{dir_crl}}/{{name_clientca}}.crl"
+
+
+
+  - name: "Chained Certs Int-CA"
+    shell: cat {{dir_intca}}/{{name_intca}}.crt {{dir_rootca}}/{{name_rootca}}.crt > {{dir_certs}}/int-ca-chain.pem
+
+  - name: "Chained Certs Infra-Int-CA"
+    shell: cat {{dir_infraca}}/{{name_infraca}}.crt {{dir_certs}}/int-ca-chain.pem > {{dir_certs}}/infra-int-ca-chain.pem
+
+  - name: "Chained Certs Client-Int-CA"
+    shell: cat {{dir_clientca}}/{{name_clientca}}.crt {{dir_certs}}/int-ca-chain.pem > {{dir_certs}}/client-int-ca-chain.pem
