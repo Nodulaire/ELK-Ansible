@@ -8,6 +8,9 @@
   notify:
     - restart ufw
 
+- name : Installing Elasticsearch repo GPG Key
+  apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+
 - name: Add Kibana repository
   apt_repository: repo='deb http://packages.elastic.co/kibana/{{kibana_version}}/debian stable main' state=present
 
@@ -16,6 +19,7 @@
     name=kibana
     state=present
     update_cache=true
+    allow-unauthenticated=yes
 
 - name: Configure kibana
   lineinfile:

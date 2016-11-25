@@ -24,14 +24,26 @@
 #- name: remove hack that allows unauthenticated packages to install
 #  file: path=/etc/apt/apt.conf.d/99temp state=absent
 ############## configuration ##############
+- name: Create conf dir
+  file: path="{{logstash_etc_dir}}/conf.d" state=directory
+
+- name: Create conf dir2
+  file: path="{{logstash_etc_dir}}/patterns" state=directory
+
+- name      : Pull Logstash Conf files {{logstash_src_conf_path}}
+  command: find {{logstash_src_conf_path}}  
+  register: logstash_file_to_copy
+
 - name : Pushing logstash Conf files
   copy:
-    src: "{{logstash_src_conf_path}}"
+    src: "{{ item }}"
     dest: "{{logstash_etc_dir}}"
     owner: "{{ logstash_directory_owner }}"
     group: "{{ logstash_directory_group }}" 
-    remote_src: False
+    remote_src: True
     mode: 0644
+    with_item:
+      - "{{ logstash_file_to_copy.stdout_lines }}"
   notify:
     - validate configuration
     - restart initd

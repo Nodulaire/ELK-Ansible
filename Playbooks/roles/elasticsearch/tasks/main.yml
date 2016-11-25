@@ -24,12 +24,14 @@
   file  :
     state=directory
     path="{{ elasticsearch_work_dir }}"
+    owner="{{ elasticsearch_user }}"
     group="{{ elasticsearch_group }}"
     recurse=yes
 
 - name  : Elasticsearch - Creating data directory
   file  :
     state=directory
+    owner="{{ elasticsearch_user }}"
     path="{{ elasticsearch_data_dir }}"
     group="{{ elasticsearch_group }}"
     recurse=yes
@@ -37,6 +39,7 @@
 - name  : Elasticsearch - Creating stack directory
   file  :
     state=directory
+    owner="{{ elasticsearch_user }}"
     path="{{ elastcisearch_cluster_name }}"
     group="{{ elasticsearch_group }}"
     recurse=yes
