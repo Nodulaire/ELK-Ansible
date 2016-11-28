@@ -29,9 +29,10 @@
     src: "{{logstash_src_conf_path}}"
     dest: "{{logstash_etc_dir}}"
     owner: "{{ logstash_directory_owner }}"
-    group: "{{ logstash_directory_group }}" 
+    group: "{{ logstash_directory_group }}"
     remote_src: False
     mode: 0644
   notify:
     - validate configuration
     - restart initd
+# TODO: Mettre la loop over conf.d files
