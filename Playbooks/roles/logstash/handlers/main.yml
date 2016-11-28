@@ -4,7 +4,9 @@
   service     : name=ufw state=restarted
 
 - name        : validate configuration
-  command     : "{{logstash_start_cmd}} --configtest"
+./logstash agent --configtest --config /etc/logstash/conf.d/*
+
+  command     : "{{logstash_start_cmd}} --configtest --config {{logstash_etc_dir}}/conf.d/* "
   changed_when: False
   register    : logstash_configtest
   failed_when : logstash_configtest.rc != 0
