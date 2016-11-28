@@ -48,8 +48,8 @@
     #logstash_local_log_dir  : '/var/log/syslog/logstash'
 
     # Elasticsearch host variables
-  #  elasticsearch_ip_addr               : "{{ hostvars[groups['production-logstash'][0]].ansible_default_ipv4.address }}"
-    elasticsearch_ip_addr               : '10.0.5.99'
+    elasticsearch_ip_addr               : "{{ hostvars[groups['production-elasticsearch'][0]].ansible_default_ipv4.address }}"
+  #  elasticsearch_ip_addr               : '10.0.5.99'
     elasticsearch_listenning_port       : 9200 # This must mach with the port on 'Install Elasticsearch'
   roles:
       - logstash
@@ -81,7 +81,7 @@
     #elasticsearch_version         : "2.3.3"
 
     # Elasticsearch running variables
-    elastcisearch_network_host    : "10.0.5.99"
+    elastcisearch_network_host    : "{{ hostvars[groups['production-elasticsearch'][0]].ansible_default_ipv4.address }}"
     elasticsearch_listenning_port : 9200
     elasticsearch_max_open_files  : 65535
   roles:
@@ -98,7 +98,7 @@
     kibana_listenning_port              : 5601
     kibana_version                      : '4.5'
     kibana_cfg_file                     : '/opt/kibana/config/kibana.yml'
-    kibana_host                         : "10.0.5.98"
+    kibana_host                         : "{{ hostvars[groups['production-kibana'][0]].ansible_default_ipv4.address }}"
 
     elasticsearch_ip_addr               : "{{ hostvars[groups['production-elasticsearch'][0]].ansible_default_ipv4.address }}"
     elasticsearch_listenning_port       : 9200 # This must mach with the port on 'Install Elasticsearch'
