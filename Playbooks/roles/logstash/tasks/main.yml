@@ -32,7 +32,20 @@
     group: "{{ logstash_directory_group }}"
     remote_src: False
     mode: 0644
+
+- name: Get file to modify
+  find:
+    paths: "{{logstash_etc_dir}}/conf.d/"
+    patterns: "*.conf"
+  register: conf_files
+
+
+- name: "Replace IP:port in file"
+  replace:
+    dest="{{item.path}}"
+    regexp="var_ELK_elasticsearch_ip:var_ELK_elasticsearch_port"
+    replace="{{elastcisearch_network_host}}:{{elasticsearch_listenning_port}}"
+  with_items: "{{conf_files.files}}"
   notify:
-    - validate configuration
-    - restart initd
-# TODO: Mettre la loop over conf.d files
+      - validate configuration
+      - restart initd
