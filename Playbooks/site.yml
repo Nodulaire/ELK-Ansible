@@ -48,7 +48,8 @@
     #logstash_local_log_dir  : '/var/log/syslog/logstash'
 
     # Elasticsearch host variables
-    elasticsearch_ip_addr               : "{{ hostvars[groups['production-logstash'][0]].ansible_default_ipv4.address }}"
+  #  elasticsearch_ip_addr               : "{{ hostvars[groups['production-logstash'][0]].ansible_default_ipv4.address }}"
+    elasticsearch_ip_addr               : '10.0.5.99'
     elasticsearch_listenning_port       : 9200 # This must mach with the port on 'Install Elasticsearch'
   roles:
       - logstash
