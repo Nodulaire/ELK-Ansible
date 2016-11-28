@@ -160,7 +160,7 @@
 
 ################### PKI ####################
 - name         : Install PKI
-  hosts        : production
+  hosts        : production-pki
   become       : yes
   become_method: sudo # run commands as sudo
   vars:
