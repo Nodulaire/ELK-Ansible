@@ -44,7 +44,7 @@
   replace:
     dest="{{item.path}}"
     regexp="var_ELK_elasticsearch_ip:var_ELK_elasticsearch_port"
-    replace="{{elastcisearch_network_host}}:{{elasticsearch_listenning_port}}"
+    replace="{{elasticsearch_ip_addr}}:{{elasticsearch_listenning_port}}"
   with_items: "{{conf_files.files}}"
   notify:
       - validate configuration
