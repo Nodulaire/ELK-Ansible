@@ -420,7 +420,7 @@
       countryName             = match
       stateOrProvinceName     = optional
       localityName            = optional
-      organizationName        = match
+      organizationName        = optional
       organizationalUnitName  = optional
       commonName              = supplied
 
@@ -488,7 +488,7 @@
       [ id_dn ]
       countryName                 = Country Name (2 letters)
       countryName_max             = 2
-      countreName_default         = FR
+      countryName_default         = FR
       stateOrProvinceName         = State or Province Name
       stateOrProvinceName_default = Bretagne
       localityName                = Locality Name
@@ -534,7 +534,7 @@
 
 
   - name: "{{name_infraca}} Generate Key"
-    command: "openssl req -new -config {{conf_intca}} -nodes -out {{dir_infraca}}/{{name_infraca}}.csr -keyout {{dir_infraca_priv}}/{{name_infraca}}.key"
+    command: "openssl req -new -config {{conf_infraca}} -nodes -out {{dir_infraca}}/{{name_infraca}}.csr -keyout {{dir_infraca_priv}}/{{name_infraca}}.key"
 
   - name: "{{name_infraca}} Sign Cert"
     command: "openssl ca -batch -config {{conf_intca}} -in {{dir_infraca}}/{{name_infraca}}.csr -out {{dir_infraca}}/{{name_infraca}}.crt -extensions signing_ca_ext"
@@ -545,7 +545,7 @@
 
 
   - name: "{{name_clientca}} Generate Key"
-    command: "openssl req -new -config {{conf_intca}} -nodes -out {{dir_clientca}}/{{name_clientca}}.csr -keyout {{dir_clientca_priv}}/{{name_clientca}}.key"
+    command: "openssl req -new -config {{conf_clientca}} -nodes -out {{dir_clientca}}/{{name_clientca}}.csr -keyout {{dir_clientca_priv}}/{{name_clientca}}.key"
 
   - name: "{{name_clientca}} Sign Cert"
     command: "openssl ca -batch -config {{conf_intca}} -in {{dir_clientca}}/{{name_clientca}}.csr -out {{dir_clientca}}/{{name_clientca}}.crt -extensions signing_ca_ext"
