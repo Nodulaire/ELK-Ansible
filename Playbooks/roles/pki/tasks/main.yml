@@ -83,7 +83,7 @@
 
   - name: Get file to modify
     find:
-      paths: "{{dir_pki}}/conf/"
+      paths: "{{dir_conf}}"
       patterns: "*.conf"
     register: conf_files
 
