@@ -94,6 +94,9 @@
       replace="{{dir_ca}}"
     with_items: "{{conf_files.files}}"
 
+
+
+
   - name: "{{name_rootca}} Generate Key"
     command: "openssl req -new -config {{conf_rootca}} -nodes -out {{dir_rootca}}/{{name_rootca}}.csr -keyout {{dir_rootca_priv}}/{{name_rootca}}.key"
 
