@@ -27,3 +27,12 @@
 
 - name: Enable ufw
   ufw: state=enabled
+
+- name: Install HTTPS-Transport
+  apt:  name=apt-transport-https update_cache=yes state=present
+
+- name: Installing Elasticsearch repo GPG Key
+  apt_key: url=https://artifacts.elastic.co/GPG-KEY-elasticsearch state=present
+
+- name: Add ELK repository
+  apt_repository: repo="deb https://artifacts.elastic.co/packages/5.x/apt stable main" state=present
