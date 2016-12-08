@@ -48,4 +48,4 @@
   with_items: "{{conf_files.files}}"
   notify:
       - validate configuration
-      - restart initd
+      - start logstash

@@ -9,9 +9,5 @@
   register    : logstash_configtest
   failed_when : logstash_configtest.rc != 0
 
-- name        : restart initd
-  service     :
-    name=logstash
-    state=restarted
-    enabled=yes
-  when        : logstash_start_stop == "initd"
+- name        : start logstash
+  service     : name=logstash state=started enabled=yes
