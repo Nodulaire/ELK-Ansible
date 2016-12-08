@@ -109,8 +109,8 @@
     kibana_es_request_timeout           : 300000
     kibana_es_shard_timeout             : 0
   roles:
-      - nginx
-      - kibana
+    - nginx
+    - kibana
 
 
 #################################################
@@ -157,7 +157,7 @@
      - u2json_daemon_user: "root"
      - u2json_daemon_name: "u2json"
   roles:
-     - snort
+#     - snort
 
 ################### PKI ####################
 - name         : Install PKI
@@ -174,15 +174,18 @@
     name_rootca: "RootCA"
     name_intca: "IntCA"
 
-    ####### ADD MORE CA (ONLINE)##########
+    ####### ADD HERE MORE CA (ONLINE)#####
     Added_CA_List:
       - {name: "InfraCA"}
       - {name: "ClientCA"}
     # - {name: "NAME_FOR_OTHER_CA"}
 
+    ######### client cert conf ###########
+    name_client: "CrtClient"
+
     ######################################
     ########### NO CHANGE NOW ############
-    name_client: "Client"
+
     ######### CA Root & Int ############
 
     dir_crl: "{{dir_pki}}/crl"

@@ -123,22 +123,22 @@
 
   - name : Creating Offline CA Conf Root
     copy:
-      src: "roles/pki/conf/RootCA.conf"
-      dest: "{{dir_conf}}/RootCA.conf"
+      src: "roles/pki/conf/root.conf"
+      dest: "{{dir_conf}}/{{name_rootca}}.conf"
       remote_src: False
       mode: 0644
 
   - name : Creating Offline CA Conf Int
     copy:
-      src: "roles/pki/conf/IntCA.conf"
-      dest: "{{dir_conf}}/IntCA.conf"
+      src: "roles/pki/conf/int.conf"
+      dest: "{{dir_conf}}/{{name_intca}}.conf"
       remote_src: False
       mode: 0644
 
   - name : Creating Offline CA Conf Client
     copy:
-      src: "roles/pki/conf/Client.conf"
-      dest: "{{dir_conf}}/Client.conf"
+      src: "roles/pki/conf/crt_client.conf"
+      dest: "{{dir_conf}}/{{name_client}}.conf"
       remote_src: False
       mode: 0644
 
@@ -157,21 +157,31 @@
       patterns: "*.conf"
     register: conf_files
 
-  - name: "Replace in file"
+  - name: "Modifiy Conf files Part 1"
     replace:
       dest="{{item.path}}"
       regexp="PATH_TO_MAIN_CA_FOLDER"
       replace="{{dir_ca}}"
     with_items: "{{conf_files.files}}"
 
-  - name: "Replace in file part 2"
+  - name: "Modifiy Conf files Part 2"
     replace:
       dest="{{dir_conf}}/{{item.name}}.conf"
       regexp="CA_NAME"
       replace="{{item.name}}"
     with_items: "{{ Added_CA_List }}"
 
+  - name: "Modifiy Conf files Part 3"
+    replace:
+      dest="{{dir_conf}}/{{name_rootca}}.conf"
+      regexp="CA_NAME"
+      replace="{{name_rootca}}"
 
+  - name: "Modifiy Conf files Part 4"
+    replace:
+      dest="{{dir_conf}}/{{name_intca}}.conf"
+      regexp="CA_NAME"
+      replace="{{name_intca}}"
 
 
   - name: "{{name_rootca}} Generate Key"
