@@ -157,7 +157,7 @@
      - u2json_daemon_user: "root"
      - u2json_daemon_name: "u2json"
   roles:
- #    - snort
+     - snort
 
 ################### PKI ####################
 - name         : Install PKI
@@ -165,71 +165,54 @@
   become       : yes
   become_method: sudo # run commands as sudo
   vars:
-    - dir_pki: "/root/pki"
-    - name_rootca: "RootCA"
-    - name_intca: "IntCA"
-    - name_infraca: "InfraCA"
-    - name_clientca: "ClientCA"
-    - name_client: "Client"
 
+    ######################################
+    ######## CHANGE VALUES HERE ##########
+    dir_pki: "/root/pki"
+
+    ######### MAIN CA (OFFLINE) ##########
+    name_rootca: "RootCA"
+    name_intca: "IntCA"
+
+    ####### ADD MORE CA (ONLINE)##########
+    Added_CA_List:
+      - {name: "InfraCA"}
+      - {name: "ClientCA"}
+    # - {name: "NAME_FOR_OTHER_CA"}
+
+    ######################################
+    ########### NO CHANGE NOW ############
+    name_client: "Client"
     ######### CA Root & Int ############
 
-    - dir_crl: "{{dir_pki}}/crl"
-    - dir_certs: "{{dir_pki}}/certs"
-    - dir_ca: "{{dir_pki}}/ca"
-    - dir_rootca: "{{dir_ca}}/{{name_rootca}}"
-    - dir_intca: "{{dir_ca}}/{{name_intca}}"
+    dir_crl: "{{dir_pki}}/crl"
+    dir_certs: "{{dir_pki}}/certs"
+    dir_ca: "{{dir_pki}}/ca"
+    dir_rootca: "{{dir_ca}}/{{name_rootca}}"
+    dir_intca: "{{dir_ca}}/{{name_intca}}"
 
-    - dir_conf: "{{dir_pki}}/conf"
-    - conf_rootca: "{{dir_conf}}/{{name_rootca}}.conf"
-    - conf_intca: "{{dir_conf}}/{{name_intca}}.conf"
+    dir_conf: "{{dir_pki}}/conf"
+    conf_rootca: "{{dir_conf}}/{{name_rootca}}.conf"
+    conf_intca: "{{dir_conf}}/{{name_intca}}.conf"
 
-    - dir_rootca_priv: "{{dir_rootca}}/private"
-    - dir_intca_priv: "{{dir_intca}}/private"
+    dir_rootca_priv: "{{dir_rootca}}/private"
+    dir_intca_priv: "{{dir_intca}}/private"
 
-    - dir_rootca_db: "{{dir_rootca}}/db"
-    - dir_intca_db: "{{dir_intca}}/db"
+    dir_rootca_db: "{{dir_rootca}}/db"
+    dir_intca_db: "{{dir_intca}}/db"
 
-    - dir_rootca_certs: "{{dir_rootca}}/certs"
-    - dir_intca_certs: "{{dir_intca}}/certs"
+    dir_rootca_certs: "{{dir_rootca}}/certs"
+    dir_intca_certs: "{{dir_intca}}/certs"
 
-    - file_rootca_crt: "{{dir_rootca_db}}/{{name_rootca}}.crt.srl"
-    - file_rootca_db: "{{dir_rootca_db}}/{{name_rootca}}.db"
-    - file_rootca_dbattr: "{{dir_rootca_db}}/{{name_rootca}}.db.attr"
-    - file_rootca_crl: "{{dir_rootca_db}}/{{name_rootca}}.crl.srl"
+    file_rootca_crt: "{{dir_rootca_db}}/{{name_rootca}}.crt.srl"
+    file_rootca_db: "{{dir_rootca_db}}/{{name_rootca}}.db"
+    file_rootca_dbattr: "{{dir_rootca_db}}/{{name_rootca}}.db.attr"
+    file_rootca_crl: "{{dir_rootca_db}}/{{name_rootca}}.crl.srl"
 
-    - file_intca_crt: "{{dir_intca_db}}/{{name_intca}}.crt.srl"
-    - file_intca_db: "{{dir_intca_db}}/{{name_intca}}.db"
-    - file_intca_dbattr: "{{dir_intca_db}}/{{name_intca}}.db.attr"
-    - file_intca_crl: "{{dir_intca_db}}/{{name_intca}}.crl.srl"
-
-    ########### More CA ##############
-
-    - dir_infraca: "{{dir_ca}}/{{name_infraca}}"
-    - dir_clientca: "{{dir_ca}}/{{name_clientca}}"
-
-    - conf_infraca: "{{dir_conf}}/{{name_infraca}}.conf"
-    - conf_clientca: "{{dir_conf}}/{{name_clientca}}.conf"
-    - conf_client: "{{dir_conf}}/{{name_client}}.conf"
-
-    - dir_infraca_priv: "{{dir_infraca}}/private"
-    - dir_clientca_priv: "{{dir_clientca}}/private"
-
-    - dir_infraca_db: "{{dir_infraca}}/db"
-    - dir_clientca_db: "{{dir_clientca}}/db"
-    
-    - dir_infraca_certs: "{{dir_infraca}}/certs"
-    - dir_clientca_certs: "{{dir_clientca}}/certs"
-
-    - file_infraca_crt: "{{dir_infraca_db}}/{{name_infraca}}.crt.srl"
-    - file_infraca_db: "{{dir_infraca_db}}/{{name_infraca}}.db"
-    - file_infraca_dbattr: "{{dir_infraca_db}}/{{name_infraca}}.db.attr"
-    - file_infraca_crl: "{{dir_infraca_db}}/{{name_infraca}}.crl.srl"
-
-    - file_clientca_crt: "{{dir_clientca_db}}/{{name_clientca}}.crt.srl"
-    - file_clientca_db: "{{dir_clientca_db}}/{{name_clientca}}.db"
-    - file_clientca_dbattr: "{{dir_clientca_db}}/{{name_clientca}}.db.attr"
-    - file_clientca_crl: "{{dir_clientca_db}}/{{name_clientca}}.crl.srl"
+    file_intca_crt: "{{dir_intca_db}}/{{name_intca}}.crt.srl"
+    file_intca_db: "{{dir_intca_db}}/{{name_intca}}.db"
+    file_intca_dbattr: "{{dir_intca_db}}/{{name_intca}}.db.attr"
+    file_intca_crl: "{{dir_intca_db}}/{{name_intca}}.crl.srl"
 
   roles:
     - pki

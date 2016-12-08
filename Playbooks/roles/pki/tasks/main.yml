@@ -3,7 +3,7 @@
   - name: Check Install OPENSSL
     apt: name=openssl state=present update_cache=true
 
-  - name: Creating Directories
+  - name: Creating Offline CA Directories
     file:
       path={{item.name}}
       state={{item.type}}
@@ -13,21 +13,16 @@
       - {name: '{{dir_crl}}',               type: 'directory'}
       - {name: '{{dir_ca}}',                type: 'directory'}
       - {name: '{{dir_certs}}',             type: 'directory'}
+      - {name: '{{dir_conf}}',             type: 'directory'}
 
       - {name: '{{dir_rootca}}',            type: 'directory'}
       - {name: '{{dir_intca}}',             type: 'directory'}
-      - {name: '{{dir_infraca}}',           type: 'directory'}
-      - {name: '{{dir_clientca}}',          type: 'directory'}
 
       - {name: '{{dir_rootca_db}}',         type: 'directory'}
       - {name: '{{dir_intca_db}}',          type: 'directory'}
-      - {name: '{{dir_infraca_db}}',        type: 'directory'}
-      - {name: '{{dir_clientca_db}}',       type: 'directory'}
 
       - {name: '{{dir_rootca_certs}}',      type: 'directory'}
       - {name: '{{dir_intca_certs}}',       type: 'directory'}
-      - {name: '{{dir_infraca_certs}}',     type: 'directory'}
-      - {name: '{{dir_clientca_certs}}',    type: 'directory'}
 
       - {name: '{{file_rootca_crt}}',       type: 'touch'}
       - {name: '{{file_rootca_db}}',        type: 'touch'}
@@ -39,47 +34,122 @@
       - {name: '{{file_intca_dbattr}}',     type: 'touch'}
       - {name: '{{file_intca_crl}}',        type: 'touch'}
 
-      - {name: '{{file_infraca_crt}}',      type: 'touch'}
-      - {name: '{{file_infraca_db}}',       type: 'touch'}
-      - {name: '{{file_infraca_dbattr}}',   type: 'touch'}
-      - {name: '{{file_infraca_crl}}',      type: 'touch'}
-
-      - {name: '{{file_clientca_crt}}',     type: 'touch'}
-      - {name: '{{file_clientca_db}}',      type: 'touch'}
-      - {name: '{{file_clientca_dbattr}}',  type: 'touch'}
-      - {name: '{{file_clientca_crl}}',     type: 'touch'}
-
-  - name: Creating Private Directories
+  - name: Creating Offline Private Directories
     file:
       path={{item.name}}
-      state={{item.type}}
+      state=directory
       mode=700
     with_items:
-      - {name: '{{dir_rootca_priv}}',       type: 'directory'}
-      - {name: '{{dir_intca_priv}}',        type: 'directory'}
-      - {name: '{{dir_infraca_priv}}',      type: 'directory'}
-      - {name: '{{dir_clientca_priv}}',     type: 'directory'}
+      - {name: '{{dir_rootca_priv}}'}
+      - {name: '{{dir_intca_priv}}'}
 
-  - name: Adding values
+  - name: Adding values to Offline Files
     lineinfile:
       dest={{item.name}}
-      line={{item.value}}
+      line="01"
     with_items:
-      - {name: '{{file_rootca_crt}}',   value: '01'}
-      - {name: '{{file_rootca_crl}}',   value: '01'}
-      - {name: '{{file_intca_crt}}',    value: '01'}
-      - {name: '{{file_intca_crl}}',    value: '01'}
-      - {name: '{{file_infraca_crt}}',  value: '01'}
-      - {name: '{{file_infraca_crl}}',  value: '01'}
-      - {name: '{{file_clientca_crt}}', value: '01'}
-      - {name: '{{file_clientca_crl}}', value: '01'}
+      - {name: '{{file_rootca_crt}}'}
+      - {name: '{{file_rootca_crl}}'}
+      - {name: '{{file_intca_crt}}'}
+      - {name: '{{file_intca_crl}}'}
 
-  - name : Pushing Conf files
+  - name: Creating Online CA Directories
+    file:
+      path="{{dir_ca}}/{{item.name}}"
+      state=directory
+      mode=775
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Creating Online CA Directories DB
+    file:
+      path="{{dir_ca}}/{{item.name}}/db"
+      state=directory
+      mode=775
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Creating Online CA Directories CERTS
+    file:
+      path="{{dir_ca}}/{{item.name}}/certs"
+      state=directory
+      mode=775
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Creating Online CA Directories PRIV
+    file:
+      path="{{dir_ca}}/{{item.name}}/private"
+      state=directory
+      mode=700
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Creating Online CA Files CRT
+    file:
+      path="{{dir_ca}}/{{item.name}}/db/{{item.name}}.crt.srl"
+      state=touch
+      mode=775
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Creating Online CA Files CRL
+    file:
+      path="{{dir_ca}}/{{item.name}}/db/{{item.name}}.crl.srl"
+      state=touch
+      mode=775
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Creating Online CA Files DB
+    file:
+      path="{{dir_ca}}/{{item.name}}/db/{{item.name}}.db"
+      state=touch
+      mode=775
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Creating Online CA Files DB ATTR
+    file:
+      path="{{dir_ca}}/{{item.name}}/db/{{item.name}}.db.attr"
+      state=touch
+      mode=775
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Adding values to Online Files CRT
+    lineinfile:
+      dest="{{dir_ca}}/{{item.name}}/db/{{item.name}}.crt.srl"
+      line="01"
+    with_items: "{{ Added_CA_List }}"
+
+  - name: Adding values to Online Files CRL
+    lineinfile:
+      dest="{{dir_ca}}/{{item.name}}/db/{{item.name}}.crl.srl"
+      line="01"
+    with_items: "{{ Added_CA_List }}"
+
+  - name : Creating Offline CA Conf Root
     copy:
-      src: "roles/pki/conf"
-      dest: "{{dir_pki}}"
+      src: "roles/pki/conf/RootCA.conf"
+      dest: "{{dir_conf}}/RootCA.conf"
       remote_src: False
       mode: 0644
+
+  - name : Creating Offline CA Conf Int
+    copy:
+      src: "roles/pki/conf/IntCA.conf"
+      dest: "{{dir_conf}}/IntCA.conf"
+      remote_src: False
+      mode: 0644
+
+  - name : Creating Offline CA Conf Client
+    copy:
+      src: "roles/pki/conf/Client.conf"
+      dest: "{{dir_conf}}/Client.conf"
+      remote_src: False
+      mode: 0644
+
+  - name : Creating Online CA Conf files
+    copy:
+      src: "roles/pki/conf/default.conf"
+      dest: "{{dir_conf}}/{{item.name}}.conf"
+      remote_src: False
+      mode: 0644
+    with_items: "{{ Added_CA_List }}"
+
 
   - name: Get file to modify
     find:
@@ -93,6 +163,13 @@
       regexp="PATH_TO_MAIN_CA_FOLDER"
       replace="{{dir_ca}}"
     with_items: "{{conf_files.files}}"
+
+  - name: "Replace in file part 2"
+    replace:
+      dest="{{dir_conf}}/{{item.name}}.conf"
+      regexp="CA_NAME"
+      replace="{{item.name}}"
+    with_items: "{{ Added_CA_List }}"
 
 
 
@@ -118,34 +195,21 @@
     command: "openssl ca -gencrl -config {{conf_intca}} -out {{dir_crl}}/{{name_intca}}.crl"
 
 
+  - name: Generate Offline CA Priv Keys
+    command: "openssl req -new -config {{dir_conf}}/{{item.name}}.conf -nodes -out {{dir_ca}}/{{item.name}}/{{item.name}}.csr -keyout {{dir_ca}}/{{item.name}}/private/{{item.name}}.key"
+    with_items: "{{ Added_CA_List }}"
 
-  - name: "{{name_infraca}} Generate Key"
-    command: "openssl req -new -config {{conf_infraca}} -nodes -out {{dir_infraca}}/{{name_infraca}}.csr -keyout {{dir_infraca_priv}}/{{name_infraca}}.key"
+  - name: Signing Offline CA Certs
+    command: "openssl ca -batch -config {{conf_intca}} -in {{dir_ca}}/{{item.name}}/{{item.name}}.csr -out {{dir_ca}}/{{item.name}}/{{item.name}}.crt -extensions signing_ca_ext"
+    with_items: "{{ Added_CA_List }}"
 
-  - name: "{{name_infraca}} Sign Cert"
-    command: "openssl ca -batch -config {{conf_intca}} -in {{dir_infraca}}/{{name_infraca}}.csr -out {{dir_infraca}}/{{name_infraca}}.crt -extensions signing_ca_ext"
-
-  - name: "{{name_infraca}} Generate CRL"
-    command: "openssl ca -gencrl -config {{conf_infraca}} -out {{dir_crl}}/{{name_infraca}}.crl"
-
-
-
-  - name: "{{name_clientca}} Generate Key"
-    command: "openssl req -new -config {{conf_clientca}} -nodes -out {{dir_clientca}}/{{name_clientca}}.csr -keyout {{dir_clientca_priv}}/{{name_clientca}}.key"
-
-  - name: "{{name_clientca}} Sign Cert"
-    command: "openssl ca -batch -config {{conf_intca}} -in {{dir_clientca}}/{{name_clientca}}.csr -out {{dir_clientca}}/{{name_clientca}}.crt -extensions signing_ca_ext"
-
-  - name: "{{name_clientca}} Generate CRL"
-    command: "openssl ca -gencrl -config {{conf_clientca}} -out {{dir_crl}}/{{name_clientca}}.crl"
-
-
+  - name: Generate Offline CA CRL
+    command: "openssl ca -gencrl -config {{dir_conf}}/{{item.name}}.conf -out {{dir_crl}}/{{item.name}}.crl"
+    with_items: "{{ Added_CA_List }}"
 
   - name: "Chained Certs Int-CA"
     shell: cat {{dir_intca}}/{{name_intca}}.crt {{dir_rootca}}/{{name_rootca}}.crt > {{dir_certs}}/int-ca-chain.pem
 
-  - name: "Chained Certs Infra-Int-CA"
-    shell: cat {{dir_infraca}}/{{name_infraca}}.crt {{dir_certs}}/int-ca-chain.pem > {{dir_certs}}/infra-int-ca-chain.pem
-
-  - name: "Chained Certs Client-Int-CA"
-    shell: cat {{dir_clientca}}/{{name_clientca}}.crt {{dir_certs}}/int-ca-chain.pem > {{dir_certs}}/client-int-ca-chain.pem
+  - name: Chained Online CA Certs
+    shell: cat {{dir_ca}}/{{item.name}}/{{item.name}}.crt {{dir_certs}}/int-ca-chain.pem > {{dir_certs}}/{{item.name}}-int-ca-chain.pem
+    with_items: "{{ Added_CA_List }}"
