@@ -11,11 +11,11 @@
 #- name: super-ugly hack to allow unauthenticated packages to install
 #  copy: content='APT::Get::AllowUnauthenticated "true";' dest=/etc/apt/apt.conf.d/99temp owner=root group=root mode=0644
   #https://github.com/ansible/ansible/issues/11620
-- name : Installing logstash repo GPG Key
-  apt_key: url=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+#- name : Installing logstash repo GPG Key
+#  apt_key: url=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
 
-- name: adding repository
-  apt_repository: repo="{{logstash_apt_repo_url}}" state=present update_cache=yes #allow_unauthenticated=true
+#- name: adding repository
+#  apt_repository: repo="{{logstash_apt_repo_url}}" state=present update_cache=yes #allow_unauthenticated=true
 
 
 - name: apt install

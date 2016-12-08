@@ -44,11 +44,11 @@
     group="{{ elasticsearch_group }}"
     recurse=yes
 ####################Installation ##############################
-- name : Installing Elasticsearch repo GPG Key
-  apt_key: url=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+#- name : Installing Elasticsearch repo GPG Key
+#  apt_key: url=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
 
-- name: adding repository
-  apt_repository: repo="{{elasticsearch_apt_repo_url}}" state=present
+#- name: adding repository
+#  apt_repository: repo="{{elasticsearch_apt_repo_url}}" state=present
 
 - name: apt install
   apt:
