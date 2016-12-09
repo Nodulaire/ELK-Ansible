@@ -3,6 +3,11 @@
   - name: Check Install OPENSSL
     apt: name=openssl state=present update_cache=true
 
+  - name: Check if previous install
+    stat:
+      path: "{{dir_pki}}"
+    register: stat_result
+
   - name: Creating Offline CA Directories
     file:
       path={{item.name}}
@@ -33,6 +38,7 @@
       - {name: '{{file_intca_db}}',         type: 'touch'}
       - {name: '{{file_intca_dbattr}}',     type: 'touch'}
       - {name: '{{file_intca_crl}}',        type: 'touch'}
+    when: stat_result.stat.exists == False
 
   - name: Creating Offline Private Directories
     file:
@@ -42,6 +48,7 @@
     with_items:
       - {name: '{{dir_rootca_priv}}'}
       - {name: '{{dir_intca_priv}}'}
+    when: stat_result.stat.exists == False
 
   - name: Adding values to Offline Files
     lineinfile:
@@ -52,6 +59,7 @@
       - {name: '{{file_rootca_crl}}'}
       - {name: '{{file_intca_crt}}'}
       - {name: '{{file_intca_crl}}'}
+    when: stat_result.stat.exists == False
 
   - name: Creating Online CA Directories
     file:
@@ -59,6 +67,7 @@
       state=directory
       mode=775
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Creating Online CA Directories DB
     file:
@@ -66,6 +75,7 @@
       state=directory
       mode=775
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Creating Online CA Directories CERTS
     file:
@@ -73,6 +83,7 @@
       state=directory
       mode=775
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Creating Online CA Directories PRIV
     file:
@@ -80,6 +91,7 @@
       state=directory
       mode=700
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Creating Online CA Files CRT
     file:
@@ -87,6 +99,7 @@
       state=touch
       mode=775
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Creating Online CA Files CRL
     file:
@@ -94,6 +107,7 @@
       state=touch
       mode=775
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Creating Online CA Files DB
     file:
@@ -101,6 +115,7 @@
       state=touch
       mode=775
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Creating Online CA Files DB ATTR
     file:
@@ -108,18 +123,21 @@
       state=touch
       mode=775
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Adding values to Online Files CRT
     lineinfile:
       dest="{{dir_ca}}/{{item.name}}/db/{{item.name}}.crt.srl"
       line="01"
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Adding values to Online Files CRL
     lineinfile:
       dest="{{dir_ca}}/{{item.name}}/db/{{item.name}}.crl.srl"
       line="01"
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name : Creating Offline CA Conf Root
     copy:
@@ -127,6 +145,7 @@
       dest: "{{dir_conf}}/{{name_rootca}}.conf"
       remote_src: False
       mode: 0644
+    when: stat_result.stat.exists == False
 
   - name : Creating Offline CA Conf Int
     copy:
@@ -134,6 +153,7 @@
       dest: "{{dir_conf}}/{{name_intca}}.conf"
       remote_src: False
       mode: 0644
+    when: stat_result.stat.exists == False
 
   - name : Creating Offline CA Conf Client
     copy:
@@ -141,6 +161,7 @@
       dest: "{{dir_conf}}/{{name_client}}.conf"
       remote_src: False
       mode: 0644
+    when: stat_result.stat.exists == False
 
   - name : Creating Online CA Conf files
     copy:
@@ -149,6 +170,7 @@
       remote_src: False
       mode: 0644
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
 
   - name: Get file to modify
@@ -157,12 +179,14 @@
       patterns: "*.conf"
     register: conf_files
 
+
   - name: "Modifiy Conf files Part 1"
     replace:
       dest="{{item.path}}"
       regexp="PATH_TO_MAIN_CA_FOLDER"
       replace="{{dir_ca}}"
     with_items: "{{conf_files.files}}"
+    when: stat_result.stat.exists == False
 
   - name: "Modifiy Conf files Part 2"
     replace:
@@ -170,56 +194,69 @@
       regexp="CA_NAME"
       replace="{{item.name}}"
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: "Modifiy Conf files Part 3"
     replace:
       dest="{{dir_conf}}/{{name_rootca}}.conf"
       regexp="CA_NAME"
       replace="{{name_rootca}}"
+    when: stat_result.stat.exists == False
 
   - name: "Modifiy Conf files Part 4"
     replace:
       dest="{{dir_conf}}/{{name_intca}}.conf"
       regexp="CA_NAME"
       replace="{{name_intca}}"
+    when: stat_result.stat.exists == False
 
 
   - name: "{{name_rootca}} Generate Key"
     command: "openssl req -new -config {{conf_rootca}} -nodes -out {{dir_rootca}}/{{name_rootca}}.csr -keyout {{dir_rootca_priv}}/{{name_rootca}}.key"
+    when: stat_result.stat.exists == False
 
   - name: "{{name_rootca}} Sign Cert"
     command: "openssl ca -selfsign -batch -config {{conf_rootca}} -in {{dir_rootca}}/{{name_rootca}}.csr -out {{dir_rootca}}/{{name_rootca}}.crt -extensions root_ca_ext"
+    when: stat_result.stat.exists == False
 
   - name: "{{name_rootca}} Generate CRL"
     command: "openssl ca -gencrl -config {{conf_rootca}} -out {{dir_crl}}/{{name_rootca}}.crl"
-
+    when: stat_result.stat.exists == False
 
 
   - name: "{{name_intca}} Generate Key"
     command: "openssl req -new -config {{conf_intca}} -nodes -out {{dir_intca}}/{{name_intca}}.csr -keyout {{dir_intca_priv}}/{{name_intca}}.key"
+    when: stat_result.stat.exists == False
 
   - name: "{{name_intca}} Sign Cert"
     command: "openssl ca -batch -config {{conf_rootca}} -in {{dir_intca}}/{{name_intca}}.csr -out {{dir_intca}}/{{name_intca}}.crt -extensions intermediate_ca_ext"
+    when: stat_result.stat.exists == False
 
   - name: "{{name_intca}} Generate CRL"
     command: "openssl ca -gencrl -config {{conf_intca}} -out {{dir_crl}}/{{name_intca}}.crl"
+    when: stat_result.stat.exists == False
 
 
   - name: Generate Offline CA Priv Keys
     command: "openssl req -new -config {{dir_conf}}/{{item.name}}.conf -nodes -out {{dir_ca}}/{{item.name}}/{{item.name}}.csr -keyout {{dir_ca}}/{{item.name}}/private/{{item.name}}.key"
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Signing Offline CA Certs
     command: "openssl ca -batch -config {{conf_intca}} -in {{dir_ca}}/{{item.name}}/{{item.name}}.csr -out {{dir_ca}}/{{item.name}}/{{item.name}}.crt -extensions signing_ca_ext"
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: Generate Offline CA CRL
     command: "openssl ca -gencrl -config {{dir_conf}}/{{item.name}}.conf -out {{dir_crl}}/{{item.name}}.crl"
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
 
   - name: "Chained Certs Int-CA"
     shell: cat {{dir_intca}}/{{name_intca}}.crt {{dir_rootca}}/{{name_rootca}}.crt > {{dir_certs}}/int-ca-chain.pem
+    when: stat_result.stat.exists == False
 
   - name: Chained Online CA Certs
     shell: cat {{dir_ca}}/{{item.name}}/{{item.name}}.crt {{dir_certs}}/int-ca-chain.pem > {{dir_certs}}/{{item.name}}-int-ca-chain.pem
     with_items: "{{ Added_CA_List }}"
+    when: stat_result.stat.exists == False
