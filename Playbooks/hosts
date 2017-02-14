@@ -6,6 +6,7 @@ production-kibana
 production-logstash
 production-elasticsearch
 production-pki
+production-snort
 
 [production-kibana]
 kibana.rotc.local ansible_user=root
