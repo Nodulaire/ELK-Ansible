@@ -52,7 +52,7 @@
   #  elasticsearch_ip_addr               : '10.0.5.99'
     elasticsearch_listenning_port       : 9200 # This must mach with the port on 'Install Elasticsearch'
   roles:
-      - logstash
+      #- logstash
 
 ################ Elasticsearch #################
 - name         : Install elasticsearch
