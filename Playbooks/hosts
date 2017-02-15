@@ -5,8 +5,7 @@
 production-kibana
 production-logstash
 production-elasticsearch
-production-pki
-production-snort
+#production-pki
 
 [production-kibana]
 kibana.rotc.local ansible_user=root
@@ -21,4 +20,4 @@ logstash.rotc.local ansible_user=root
 pki.rotc.local ansible_user=root
 
 [production-snort]
-192.168.1.252 ansible_user=root
+10.0.5.101 ansible_user=root
