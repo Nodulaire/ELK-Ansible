@@ -5,6 +5,7 @@
 |  Date | Version  | Author  | Change/Addition  |
 |---|---|---|---|
 | 22/08/2016  |1 | Renaud PULIDO  |  Creation |
+| 15/07/2017 | 1.1 | Renaud PULIDO | Update |
 
 
 ## AIM
